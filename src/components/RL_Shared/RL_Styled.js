@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, Form } from "formik";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import LoadingIcons from "react-loading-icons";
 
 export const FormStyled = styled(Form)`
   display: flex;
@@ -59,6 +60,8 @@ export const RL_ContainerStyled = styled.div`
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
   padding: 20px;
+  width: 250px;
+  min-height: 300px;
 `;
 
 export const RL_ButtonStyled = styled.button`
@@ -83,4 +86,20 @@ export const RL_RedirectSignStyled = styled(NavLink)`
   margin-top: 10px;
   align-self: center;
   text-decoration: underline;
+`;
+
+export const RL_ErrorMsgStyled = styled.p`
+  color: red;
+  font-weight: 400;
+  width: 100%;
+  font-size: 1rem;
+  align-self: center;
+  text-align: center;
+`;
+
+export const RL_LoadingIconStyled = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
+  height: 35%;
+  width: 35%;
 `;

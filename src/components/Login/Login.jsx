@@ -5,39 +5,67 @@ import {
   RL_SignStyled,
   RL_ButtonStyled,
   RL_RedirectSignStyled,
+  RL_ErrorMsgStyled,
+  RL_LoadingIconStyled,
 } from "../RL_Shared/RL_Styled";
 import { Formik } from "formik";
 import { initialValuesLogin } from "../../formik/Login/initialValues";
 import { validationSchemaLogin } from "../../formik/Login/validationSchema";
 import RL_FieldInput from "../RL_Shared/RL_FieldInput";
+import { useLoginMutation } from "../../store/api/apiSlice";
 
 const Login = () => {
+  const [login, { data, isLoading, error }] = useLoginMutation();
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      const result = await login({
+        username: values.username,
+        contraseña: values.password,
+      }).unwrap();
+    } catch (err) {}
+  };
   return (
     <RL_ContainerStyled>
-      <RL_SignStyled> Inicia Sesión!</RL_SignStyled>
-      <Formik
-        initialValues={initialValuesLogin}
-        validationSchema={validationSchemaLogin}
-      >
-        <FormStyled>
-          <RL_FieldInput
-            name={"username"}
-            placeholder={"Ingresa tu nombre de usuario"}
-            type={"text"}
-            displayName={"Username"}
-          ></RL_FieldInput>
-          <RL_FieldInput
-            name={"password"}
-            placeholder={"Ingresa tu contraseña"}
-            type={"text"}
-            displayName={"Contraseña"}
-          ></RL_FieldInput>
-          <RL_ButtonStyled>Iniciar Sesión</RL_ButtonStyled>
-        </FormStyled>
-      </Formik>
-      <RL_RedirectSignStyled to={"/register"}>
-        No tienes una cuenta? Registrate!
-      </RL_RedirectSignStyled>
+      {!isLoading && (
+        <>
+          <RL_SignStyled> Inicia Sesión!</RL_SignStyled>
+          <Formik
+            initialValues={initialValuesLogin}
+            validationSchema={validationSchemaLogin}
+            onSubmit={handleSubmit}
+          >
+            <FormStyled>
+              <RL_FieldInput
+                name={"username"}
+                placeholder={"Ingresa tu nombre de usuario"}
+                type={"text"}
+                displayName={"Username"}
+              ></RL_FieldInput>
+              <RL_FieldInput
+                name={"password"}
+                placeholder={"Ingresa tu contraseña"}
+                type={"password"}
+                displayName={"Contraseña"}
+                autoComplete="new-password"
+              ></RL_FieldInput>
+              <RL_ButtonStyled type={"submit"} disabled={isLoading}>
+                Iniciar Sesión
+              </RL_ButtonStyled>
+            </FormStyled>
+          </Formik>
+          <RL_RedirectSignStyled to={"/register"}>
+            No tienes una cuenta? Registrate!
+          </RL_RedirectSignStyled>
+          {error && <RL_ErrorMsgStyled>{error.data.msg}</RL_ErrorMsgStyled>}
+        </>
+      )}
+      {isLoading && (
+        <RL_LoadingIconStyled
+          stroke="#98ff98"
+          strokeOpacity={0.125}
+          speed={0.75}
+        ></RL_LoadingIconStyled>
+      )}
     </RL_ContainerStyled>
   );
 };
