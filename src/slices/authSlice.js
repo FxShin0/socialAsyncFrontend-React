@@ -13,10 +13,13 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      localStorage.removeItem("token");
     },
     setUserData: (state, action) => {
       state.token = action.payload.token;
       state.user = jwtDecode(action.payload.token).username;
+      //lo siguiente esta mal por riesgos de CSS pero por este proyecto se hará asi
+      localStorage.setItem("token", JSON.stringify(state.token));
     },
   },
 });

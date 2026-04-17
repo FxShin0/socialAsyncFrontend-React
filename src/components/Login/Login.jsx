@@ -13,8 +13,13 @@ import { initialValuesLogin } from "../../formik/Login/initialValues";
 import { validationSchemaLogin } from "../../formik/Login/validationSchema";
 import RL_FieldInput from "../RL_Shared/RL_FieldInput";
 import { useLoginMutation } from "../../store/api/apiSlice";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [login, { data, isLoading, error }] = useLoginMutation();
   const handleSubmit = async (values, { resetForm }) => {
     try {
@@ -22,6 +27,8 @@ const Login = () => {
         username: values.username,
         contraseña: values.password,
       }).unwrap();
+      dispatch(setUserData(result));
+      navigate("/");
     } catch (err) {}
   };
   return (

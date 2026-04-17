@@ -16,23 +16,41 @@ import {
   RL_LoadingIconStyled,
 } from "../RL_Shared/RL_Styled";
 import RL_FieldInput from "../RL_Shared/RL_FieldInput";
-import { useRegisterMutation } from "../../store/api/apiSlice";
+import {
+  useLoginMutation,
+  useRegisterMutation,
+} from "../../store/api/apiSlice";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [register, { data, isLoading, error }] = useRegisterMutation();
+  const [
+    login,
+    { data: dataLogin, isLoading: isLoadingLogin, error: errorLogin },
+  ] = useLoginMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleSubmit = async (values, { resetForm }) => {
     try {
-      const result = register({
+      const result = await register({
         nombre: values.name,
         username: values.username,
         contraseña: values.password,
-      });
+      }).unwrap();
+      const resultLogin = await login({
+        username: values.username,
+        contraseña: values.password,
+      }).unwrap();
+      dispatch(setUserData(resultLogin));
+      navigate("/");
       resetForm();
     } catch (err) {}
   };
   return (
     <RL_ContainerStyled>
-      {!isLoading && (
+      {!isLoading && !isLoadingLogin && (
         <>
           <RL_SignStyled>Crea tu cuenta!</RL_SignStyled>
           <Formik
@@ -67,7 +85,7 @@ const Register = () => {
           </RL_RedirectSignStyled>
         </>
       )}
-      {isLoading && (
+      {(isLoading || isLoadingLogin) && (
         <RL_LoadingIconStyled
           stroke="#98ff98"
           strokeOpacity={0.125}
@@ -76,6 +94,12 @@ const Register = () => {
       )}
 
       {error && <RL_ErrorMsgStyled>error.data.msg</RL_ErrorMsgStyled>}
+      {errorLogin && (
+        <RL_ErrorMsgStyled>
+          Tu cuenta se creó de forma exitosa pero no pudimos iniciar sesion
+          automticamente, inicia de forma manual porfavor
+        </RL_ErrorMsgStyled>
+      )}
     </RL_ContainerStyled>
   );
 };
