@@ -44,7 +44,7 @@ const Register = () => {
         contraseña: values.password,
       }).unwrap();
       dispatch(setUserData(resultLogin));
-      navigate("/");
+      navigate("/feed");
       resetForm();
     } catch (err) {}
   };

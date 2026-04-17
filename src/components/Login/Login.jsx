@@ -28,7 +28,7 @@ const Login = () => {
         contraseña: values.password,
       }).unwrap();
       dispatch(setUserData(result));
-      navigate("/");
+      navigate("/feed");
     } catch (err) {}
   };
   return (
