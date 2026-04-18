@@ -1,14 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
+import { useUserIsLogged } from "../../../customHooks/userIsLogged";
 
 const LoginProtected = ({ children, redirectTo }) => {
-  const tokenRdx = useSelector((state) => {
-    return state.auth.token;
-  });
-  const tokenLocal = localStorage.getItem("token");
-
-  return tokenRdx || tokenLocal ? (
+  const userIsLogged = useUserIsLogged();
+  return userIsLogged ? (
     <Outlet></Outlet>
   ) : (
     <Navigate to={redirectTo}></Navigate>

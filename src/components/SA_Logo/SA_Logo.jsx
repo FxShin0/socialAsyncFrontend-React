@@ -1,15 +1,17 @@
 import React from "react";
 import {
   LogoContainerStyled,
-  RedLettersSpanStyled,
+  RedLetterSpanStyled,
   WhiteLetterSpanStyled,
 } from "./SA_LogoStyled";
 
-const SA_Logo = () => {
+const SA_Logo = ({ shouldpoint }) => {
   return (
-    <LogoContainerStyled>
-      <RedLettersSpanStyled>SAS</RedLettersSpanStyled>
-      <WhiteLetterSpanStyled>ync</WhiteLetterSpanStyled>
+    <LogoContainerStyled shouldpoint={shouldpoint}>
+      <RedLetterSpanStyled>s</RedLetterSpanStyled>
+      <WhiteLetterSpanStyled>ocial</WhiteLetterSpanStyled>
+      <RedLetterSpanStyled>A</RedLetterSpanStyled>
+      <WhiteLetterSpanStyled>sync</WhiteLetterSpanStyled>
     </LogoContainerStyled>
   );
 };

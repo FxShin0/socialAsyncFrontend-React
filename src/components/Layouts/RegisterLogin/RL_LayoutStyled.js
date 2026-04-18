@@ -4,14 +4,18 @@ export const RL_NavbarStyled = styled.nav`
   height: 7vh;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   background-color: #00010d;
   border-bottom: solid 3px white;
+  padding: 0px 20px;
+  position: fixed;
+  top: 0px;
 `;
 
 export const RL_ContainerStyled = styled.div`
+  margin-top: 7vh;
   height: 88vh;
   width: 100%;
   display: flex;
