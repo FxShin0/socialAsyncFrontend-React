@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FriendSectionStyled,
   LayoutContainerStyled,
@@ -18,6 +18,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../slices/authSlice";
 import Friends from "../../Friends/Friends";
+import { useUserIsLogged } from "../../../customHooks/userIsLogged";
 
 const Logged_Layout = () => {
   const navigate = useNavigate();

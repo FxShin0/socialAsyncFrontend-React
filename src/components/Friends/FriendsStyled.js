@@ -13,7 +13,7 @@ export const FriendCardStyled = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  height: 50px;
+  min-height: 50px;
   width: 100%;
   border-bottom: solid 1px white;
   text-align: center;
@@ -32,13 +32,13 @@ export const UsernameAndNameContainerStyled = styled.div`
 `;
 
 export const UsernameStyled = styled.p`
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: white;
   font-weight: 400;
 `;
 
 export const NameStyled = styled.p`
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: white;
   font-weight: 200;
   opacity: 0.7;

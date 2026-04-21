@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import LoginProtected from "../components/protectedRoutes/Login/LoginProtected";
 import NotFound from "../components/NotFound/NotFound";
 import UnloggedProtected from "../components/protectedRoutes/Unlogged/UnloggedProtected";
+import SessionExpired from "../components/SessionExpired/SessionExpired";
 
 const Routes = () => {
   return (
@@ -25,6 +26,10 @@ const Routes = () => {
           <Route element={<RL_Layout></RL_Layout>}>
             <Route path="/login" element={<Login></Login>}></Route>
             <Route path="/register" element={<Register></Register>}></Route>
+            <Route
+              path="/sessionExpired"
+              element={<SessionExpired></SessionExpired>}
+            ></Route>
           </Route>
         </Route>
         <Route

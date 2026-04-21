@@ -4,6 +4,15 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://socialasync.onrender.com",
+    prepareHeaders: (headers, { getState }) => {
+      const tokenRdx = getState().auth.token;
+      const tokenLocal = JSON.parse(localStorage.getItem("token"));
+
+      const token = tokenRdx || tokenLocal;
+
+      if (token) headers.set("Authorization", `Bearer ${token}`);
+      return headers;
+    },
   }),
   endpoints: (builder) => {
     return {
@@ -25,8 +34,14 @@ export const apiSlice = createApi({
           };
         },
       }),
+      getFriends: builder.query({
+        query: () => {
+          return "/friend/list";
+        },
+      }),
     };
   },
 });
 
-export const { useLoginMutation, useRegisterMutation } = apiSlice;
+export const { useLoginMutation, useRegisterMutation, useGetFriendsQuery } =
+  apiSlice;
