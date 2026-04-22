@@ -39,9 +39,18 @@ export const apiSlice = createApi({
           return "/friend/list";
         },
       }),
+      getUserFeed: builder.query({
+        query: (page) => {
+          return page ? `/feed?page=${page}` : "/feed";
+        },
+      }),
     };
   },
 });
 
-export const { useLoginMutation, useRegisterMutation, useGetFriendsQuery } =
-  apiSlice;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetFriendsQuery,
+  useGetUserFeedQuery,
+} = apiSlice;

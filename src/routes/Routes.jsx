@@ -14,6 +14,7 @@ import LoginProtected from "../components/protectedRoutes/Login/LoginProtected";
 import NotFound from "../components/NotFound/NotFound";
 import UnloggedProtected from "../components/protectedRoutes/Unlogged/UnloggedProtected";
 import SessionExpired from "../components/SessionExpired/SessionExpired";
+import Posts from "../components/Posts/Posts";
 
 const Routes = () => {
   return (
@@ -36,7 +37,7 @@ const Routes = () => {
           element={<LoginProtected redirectTo={"/login"}></LoginProtected>}
         >
           <Route element={<Logged_Layout></Logged_Layout>}>
-            <Route path="/feed" element={<p>Feed</p>}></Route>
+            <Route path="/feed" element={<Posts></Posts>}></Route>
             <Route path="/posts/:username"></Route>
           </Route>
         </Route>
