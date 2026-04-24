@@ -60,13 +60,19 @@ export const feedSlice = createSlice({
       state.posts = [
         ...state.posts,
         ...action.payload.posts.map((post) => {
-          return {
-            postId: post._id,
-            username: post.username,
-            content: post.content,
-            createdAt: post.createdAt,
-            comments: [],
-          };
+          if (
+            !state.posts.some((postLoaded) => {
+              return postLoaded.postId === post._id;
+            })
+          )
+            return {
+              postId: post._id,
+              username: post.username,
+              content: post.content,
+              createdAt: post.createdAt,
+              comments: [],
+            };
+          else return;
         }),
       ];
       console.log(state.posts);

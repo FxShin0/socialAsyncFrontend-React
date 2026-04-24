@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { GiFinishLine } from "react-icons/gi";
+import { RL_LoadingIconStyled } from "../RL_Shared/RL_Styled";
 
 export const PostsContainerStyled = styled.div`
   width: 100%;
@@ -95,4 +96,9 @@ export const EndOfFeedIconStyled = styled(GiFinishLine)`
 export const EndOfFeedMsg = styled.p`
   color: white;
   font-size: 1.3rem;
+`;
+
+export const FeedLoadingIcon = styled(RL_LoadingIconStyled)`
+  height: 100px;
+  width: 100px;
 `;
