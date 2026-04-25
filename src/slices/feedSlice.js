@@ -14,6 +14,7 @@ const initialState = {
         createdAt: null,
       },
     ],
+    showComments: false;
   },
 ];
 };*/
@@ -56,30 +57,55 @@ export const feedSlice = createSlice({
       console.log(state.comments);
     },
     loadPostBatch: (state, action) => {
+      const newPosts = action.payload?.posts;
+      if (!newPosts) return;
+
+      const existingIds = new Set(state.posts.map((p) => p.postId));
+
+      const formatted = newPosts
+        .filter((post) => !existingIds.has(post._id))
+        .map((post) => ({
+          postId: post._id,
+          username: post.username,
+          content: post.content,
+          createdAt: post.createdAt,
+          comments: [],
+        }));
+
+      state.posts.push(...formatted);
+    },
+    loadCommentsBatch: (state, action) => {
       console.log(action.payload);
-      state.posts = [
-        ...state.posts,
-        ...action.payload.posts.map((post) => {
-          if (
-            !state.posts.some((postLoaded) => {
-              return postLoaded.postId === post._id;
-            })
-          )
-            return {
-              postId: post._id,
-              username: post.username,
-              content: post.content,
-              createdAt: post.createdAt,
-              comments: [],
-            };
-          else return;
+      const newComments = action.payload?.comments;
+      if (!newComments || newComments.length === 0) return;
+      const index = state.posts.findIndex((post) => {
+        return post.postId === newComments[0].postId;
+      });
+      const existingIds = new Set(
+        state.posts[index].comments.map((c) => {
+          return c.commentId;
         }),
-      ];
-      console.log(state.posts);
+      );
+
+      const formatted = newComments
+        .filter((c) => {
+          console.log(existingIds.has(c._id));
+          return !existingIds.has(c._id);
+        })
+        .map((c) => {
+          return {
+            commentId: c._id,
+            username: c.username,
+            content: c.content,
+            createdAt: c.createdAt,
+          };
+        });
+      state.posts[index].comments.push(...formatted);
     },
   },
 });
 
-export const { addNewPost, addNewComment, loadPostBatch } = feedSlice.actions;
+export const { addNewPost, addNewComment, loadPostBatch, loadCommentsBatch } =
+  feedSlice.actions;
 
 export default feedSlice.reducer;

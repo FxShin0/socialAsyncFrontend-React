@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   ActionsContainerStyled,
   CommentButton,
@@ -37,19 +37,14 @@ const Posts = () => {
           return (
             <PostContainerStyled key={post?.postId}>
               <IconAndNameContainerStyled>
-                <IconStyled>{post?.username.charAt(0)}</IconStyled>
+                <IconStyled>{post?.username?.charAt(0)}</IconStyled>
                 <NameContainerStyled>{post?.username}</NameContainerStyled>
               </IconAndNameContainerStyled>
               <DateContainerStyled>
                 {getDate(post?.createdAt).hourDateString}
               </DateContainerStyled>
               <TextContainerStyled>{post?.content}</TextContainerStyled>
-              <ActionsContainerStyled>
-                <CommentButton>
-                  <FaCommentDots></FaCommentDots>Comentar
-                </CommentButton>
-              </ActionsContainerStyled>
-              <Comments></Comments>
+              <Comments postId={post?.postId}></Comments>
             </PostContainerStyled>
           );
         })}
@@ -65,7 +60,7 @@ const Posts = () => {
           Ocurrio un error al obtener el feed: {error.msg}
         </ErrorMessageStyled>
       )}
-      {isSuccess && data.posts.length != 15 && (
+      {isSuccess && data?.posts?.length != 15 && (
         <>
           <EndOfFeedIconStyled></EndOfFeedIconStyled>
           <EndOfFeedMsg>

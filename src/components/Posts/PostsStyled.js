@@ -39,6 +39,7 @@ export const IconStyled = styled.p`
   padding: 10px;
   font-size: 1.5rem;
   text-align: center;
+  flex-shrink: 0;
 `;
 
 export const NameContainerStyled = styled.p`

@@ -16,9 +16,13 @@ import {
 } from "../RL_Shared/RL_Styled";
 import { useNavigate } from "react-router-dom";
 import { logout, setSessionExpired } from "../../slices/authSlice";
+import { IconStyled } from "../Posts/PostsStyled";
 
 const Friends = () => {
-  const { data, error, isFetching, isSuccess, isError } = useGetFriendsQuery();
+  const { data, error, isFetching, isSuccess, isError } = useGetFriendsQuery(
+    undefined,
+    { refetchOnMountOrArgChange: true },
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const username = useSelector((state) => {
@@ -37,7 +41,11 @@ const Friends = () => {
         data.friendList.map((friend) => {
           return (
             <FriendCardStyled key={friend._id}>
-              <FriendIconStyled></FriendIconStyled>
+              <IconStyled>
+                {friend.emitterUsername == username
+                  ? friend.recieverUsername.charAt(0)
+                  : friend.emitterUsername.charAt(0)}
+              </IconStyled>
               <UsernameAndNameContainerStyled>
                 <UsernameStyled>
                   {friend.emitterUsername == username

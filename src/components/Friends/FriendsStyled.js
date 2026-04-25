@@ -18,6 +18,10 @@ export const FriendCardStyled = styled.div`
   border-bottom: solid 1px white;
   text-align: center;
   padding: 0px 10px;
+  &:hover {
+    background-color: #08081e;
+    cursor: pointer;
+  }
 `;
 
 export const FriendIconStyled = styled(FaUserCheck)`

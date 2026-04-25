@@ -44,6 +44,11 @@ export const apiSlice = createApi({
           return page ? `/feed?page=${page}` : "/feed";
         },
       }),
+      getComments: builder.query({
+        query: (postId) => {
+          return `/comment/${postId}`;
+        },
+      }),
     };
   },
 });
@@ -53,4 +58,5 @@ export const {
   useRegisterMutation,
   useGetFriendsQuery,
   useGetUserFeedQuery,
+  useGetCommentsQuery,
 } = apiSlice;
