@@ -49,6 +49,15 @@ export const apiSlice = createApi({
           return `/comment/${postId}`;
         },
       }),
+      postComment: builder.mutation({
+        query: (commentInfo) => {
+          return {
+            url: "/comment",
+            method: "POST",
+            body: commentInfo, //{token, content, postId}
+          };
+        },
+      }),
     };
   },
 });
@@ -59,4 +68,5 @@ export const {
   useGetFriendsQuery,
   useGetUserFeedQuery,
   useGetCommentsQuery,
+  usePostCommentMutation,
 } = apiSlice;

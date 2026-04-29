@@ -1,7 +1,8 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { IoSend } from "react-icons/io5";
 import { IoReload } from "react-icons/io5";
 import { RL_LoadingIconStyled } from "../RL_Shared/RL_Styled";
+import { ErrorMessage, Field, Form } from "formik";
 
 export const CommentSectionStyled = styled.div`
   display: flex;
@@ -23,6 +24,11 @@ export const CommentContainerStyled = styled.div`
   padding: 10px 20px;
   border-radius: 20px;
   flex-shrink: 0;
+  ${({ isNew }) =>
+    isNew &&
+    css`
+      animation: ${glow} 1.2s ease;
+    `}
 `;
 
 export const NameAndCommentContainerStyled = styled.div`
@@ -97,4 +103,42 @@ export const NoCommentsMsgStyled = styled.p`
 export const CommentLoadingIconStyled = styled(RL_LoadingIconStyled)`
   width: 100px;
   height: 100px;
+`;
+
+export const CommentAndSendContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+`;
+
+export const CommentFormStyled = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+`;
+
+export const SendCommentButton = styled.button`
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const glow = keyframes`
+  0% {
+    box-shadow: 0 0 0px rgba(255,255,255,0);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(255,255,255,0.8);
+  }
+  100% {
+    box-shadow: 0 0 0px rgba(255,255,255,0);
+  }
+`;
+
+export const BottomRef = styled.div`
+  scroll-margin-top: 500px;
 `;

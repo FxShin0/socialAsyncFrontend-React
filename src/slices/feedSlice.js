@@ -54,7 +54,6 @@ export const feedSlice = createSlice({
             }
           : post;
       });
-      console.log(state.comments);
     },
     loadPostBatch: (state, action) => {
       const newPosts = action.payload?.posts;
