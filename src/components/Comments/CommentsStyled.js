@@ -127,7 +127,7 @@ export const SendCommentButton = styled.button`
   justify-content: center;
 `;
 
-const glow = keyframes`
+export const glow = keyframes`
   0% {
     box-shadow: 0 0 0px rgba(255,255,255,0);
   }

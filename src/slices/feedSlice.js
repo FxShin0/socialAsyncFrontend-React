@@ -74,32 +74,21 @@ export const feedSlice = createSlice({
       state.posts.push(...formatted);
     },
     loadCommentsBatch: (state, action) => {
-      console.log(action.payload);
       const newComments = action.payload?.comments;
       if (!newComments || newComments.length === 0) return;
       const index = state.posts.findIndex((post) => {
         return post.postId === newComments[0].postId;
       });
-      const existingIds = new Set(
-        state.posts[index].comments.map((c) => {
-          return c.commentId;
-        }),
-      );
 
-      const formatted = newComments
-        .filter((c) => {
-          console.log(existingIds.has(c._id));
-          return !existingIds.has(c._id);
-        })
-        .map((c) => {
-          return {
-            commentId: c._id,
-            username: c.username,
-            content: c.content,
-            createdAt: c.createdAt,
-          };
-        });
-      state.posts[index].comments.push(...formatted);
+      const formatted = newComments.map((c) => {
+        return {
+          commentId: c._id,
+          username: c.username,
+          content: c.content,
+          createdAt: c.createdAt,
+        };
+      });
+      state.posts[index].comments = formatted;
     },
   },
 });
