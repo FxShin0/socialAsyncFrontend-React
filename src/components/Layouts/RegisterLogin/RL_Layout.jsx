@@ -19,7 +19,7 @@ const RL_Layout = () => {
       </RL_ContainerStyled>
       <RL_FooterStyled>
         <RL_FooterTextContainer>
-          socialAsync - Hecho con 🤬
+          socialAsync - Hecho con ☕
         </RL_FooterTextContainer>
       </RL_FooterStyled>
     </>
