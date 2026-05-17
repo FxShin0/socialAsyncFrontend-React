@@ -4,6 +4,7 @@ import {
   FriendIconStyled,
   FriendsContainerStyled,
   NameStyled,
+  NoFriendsMessage,
   UsernameAndNameContainerStyled,
   UsernameStyled,
 } from "./FriendsStyled";
@@ -81,6 +82,9 @@ const Friends = () => {
         <ErrorMessageStyled>
           Ocurrio un error al obtener la lista de amigos: {error.msg}
         </ErrorMessageStyled>
+      )}
+      {data?.friendList?.length === 0 && (
+        <NoFriendsMessage>No tienes amigos agregados 👀</NoFriendsMessage>
       )}
     </FriendsContainerStyled>
   );

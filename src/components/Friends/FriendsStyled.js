@@ -6,6 +6,7 @@ export const FriendsContainerStyled = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 10px;
 `;
 
 export const FriendCardStyled = styled.div`
@@ -46,4 +47,10 @@ export const NameStyled = styled.p`
   color: white;
   font-weight: 200;
   opacity: 0.7;
+`;
+
+export const NoFriendsMessage = styled.p`
+  font-size: 1rem;
+  color: white;
+  text-align: center;
 `;
