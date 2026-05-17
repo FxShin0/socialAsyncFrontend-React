@@ -16,7 +16,7 @@ import {
 } from "../RL_Shared/RL_Styled";
 import { useNavigate } from "react-router-dom";
 import { logout, setSessionExpired } from "../../slices/authSlice";
-import { IconStyled } from "../Posts/PostsStyled";
+import { IconStyled } from "../PostSection/PostSectionStyled";
 
 const Friends = () => {
   const { data, error, isFetching, isSuccess, isError } = useGetFriendsQuery(
@@ -40,7 +40,18 @@ const Friends = () => {
       {isSuccess &&
         data.friendList.map((friend) => {
           return (
-            <FriendCardStyled key={friend._id}>
+            <FriendCardStyled
+              key={friend._id}
+              onClick={() => {
+                navigate(
+                  `/posts/${
+                    friend.emitterUsername == username
+                      ? friend.recieverUsername
+                      : friend.emitterUsername
+                  }`,
+                );
+              }}
+            >
               <IconStyled>
                 {friend.emitterUsername == username
                   ? friend.recieverUsername.charAt(0)

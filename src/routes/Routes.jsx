@@ -1,20 +1,19 @@
-import React from "react";
 import {
   BrowserRouter,
   Navigate,
   Routes as ReactDomRoutes,
   Route,
 } from "react-router-dom";
-import RL_Layout from "../components/Layouts/RegisterLogin/RL_Layout";
-import Register from "../components/Register/Register";
-import Login from "../components/Login/Login";
 import Logged_Layout from "../components/Layouts/LoggedIn/Logged_Layout";
-import { useSelector } from "react-redux";
-import LoginProtected from "../components/protectedRoutes/Login/LoginProtected";
+import RL_Layout from "../components/Layouts/RegisterLogin/RL_Layout";
+import Login from "../components/Login/Login";
 import NotFound from "../components/NotFound/NotFound";
+import Profile from "../components/Profile/Profile";
+import Feed from "../components/Feed/Feed";
+import LoginProtected from "../components/protectedRoutes/Login/LoginProtected";
 import UnloggedProtected from "../components/protectedRoutes/Unlogged/UnloggedProtected";
+import Register from "../components/Register/Register";
 import SessionExpired from "../components/SessionExpired/SessionExpired";
-import Posts from "../components/Posts/Posts";
 
 const Routes = () => {
   return (
@@ -37,8 +36,11 @@ const Routes = () => {
           element={<LoginProtected redirectTo={"/login"}></LoginProtected>}
         >
           <Route element={<Logged_Layout></Logged_Layout>}>
-            <Route path="/feed" element={<Posts></Posts>}></Route>
-            <Route path="/posts/:username"></Route>
+            <Route path="/feed" element={<Feed></Feed>}></Route>
+            <Route
+              path="/posts/:username"
+              element={<Profile></Profile>}
+            ></Route>
           </Route>
         </Route>
         <Route path="*" element={<NotFound></NotFound>}></Route>

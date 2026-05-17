@@ -1,24 +1,21 @@
-import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet, useNavigate } from "react-router-dom";
+import { logout } from "../../../slices/authSlice";
+import Friends from "../../Friends/Friends";
+import SA_Logo from "../../SA_Logo/SA_Logo";
 import {
   FriendSectionStyled,
   LayoutContainerStyled,
   LoggedNavbarStyled,
-  LogoutContainerStyled,
-  LogoutIconStyled,
-  LogoutTextStyled,
   MainContainerStyled,
-  NavProfileAndLogoutContainerSylted,
-  NavProfileContainerStyled,
-  NavProfileIconStyled,
-  NavProfileNameStyled,
+  NavButtonContainerStyled,
+  NavProfileAndLogoutContainerStyled,
   SearchFriendsInputStyled,
+  NavUserIconStyled,
+  NavLogoutIconStyled,
+  NavHomeIconStyled,
+  NavButtonNameStyled,
 } from "./Logged_LayoutStyled";
-import SA_Logo from "../../SA_Logo/SA_Logo";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../slices/authSlice";
-import Friends from "../../Friends/Friends";
-import { useUserIsLogged } from "../../../customHooks/userIsLogged";
 
 const Logged_Layout = () => {
   const navigate = useNavigate();
@@ -39,24 +36,32 @@ const Logged_Layout = () => {
           placeholder="Buscar personas..."
           type="text"
         ></SearchFriendsInputStyled>
-        <NavProfileAndLogoutContainerSylted>
-          <NavProfileContainerStyled
+        <NavProfileAndLogoutContainerStyled>
+          <NavButtonContainerStyled
+            onClick={() => {
+              navigate("/feed");
+            }}
+          >
+            <NavHomeIconStyled></NavHomeIconStyled>
+            <NavButtonNameStyled>Inicio</NavButtonNameStyled>
+          </NavButtonContainerStyled>
+          <NavButtonContainerStyled
             onClick={() => {
               navigate(`/posts/${username}`);
             }}
           >
-            <NavProfileIconStyled></NavProfileIconStyled>
-            <NavProfileNameStyled>{username}</NavProfileNameStyled>
-          </NavProfileContainerStyled>
-          <LogoutContainerStyled
+            <NavUserIconStyled></NavUserIconStyled>
+            <NavButtonNameStyled>{username}</NavButtonNameStyled>
+          </NavButtonContainerStyled>
+          <NavButtonContainerStyled
             onClick={() => {
               dispatch(logout());
             }}
           >
-            <LogoutTextStyled>Cerrar sesión</LogoutTextStyled>
-            <LogoutIconStyled></LogoutIconStyled>
-          </LogoutContainerStyled>
-        </NavProfileAndLogoutContainerSylted>
+            <NavButtonNameStyled>Cerrar sesión</NavButtonNameStyled>
+            <NavLogoutIconStyled></NavLogoutIconStyled>
+          </NavButtonContainerStyled>
+        </NavProfileAndLogoutContainerStyled>
       </LoggedNavbarStyled>
       <LayoutContainerStyled>
         <MainContainerStyled>

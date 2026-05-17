@@ -1,4 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import { ErrorMessage, Field, Formik } from "formik";
+import { useEffect, useRef, useState } from "react";
+import { FaArrowCircleUp, FaCommentDots } from "react-icons/fa";
+import { FaPenNib } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { initialValuesComment } from "../../formik/Comment/initialValues";
+import { validationSchemaComment } from "../../formik/Comment/validationSchema";
+import { getDate } from "../../helpers/getDateString";
+import {
+  useGetCommentsQuery,
+  usePostCommentMutation,
+} from "../../store/api/apiSlice";
+import {
+  ActionsContainerStyled,
+  CommentButton,
+  IconStyled,
+} from "../PostSection/PostSectionStyled";
+import { ErrorMessageStyled } from "../RL_Shared/RL_Styled";
 import {
   BottomRef,
   CommentAndSendContainer,
@@ -17,48 +34,24 @@ import {
   ReloadCommentsIconStyled,
   SendCommentButton,
 } from "./CommentsStyled";
-import {
-  ActionsContainerStyled,
-  CommentButton,
-  DateContainerStyled,
-  IconStyled,
-} from "../Posts/PostsStyled";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetCommentsQuery,
-  usePostCommentMutation,
-} from "../../store/api/apiSlice";
-import { FaCommentDots, FaArrowCircleUp } from "react-icons/fa";
-import {
-  ErrorMessageStyled,
-  RL_LoadingIconStyled,
-} from "../RL_Shared/RL_Styled";
-import { addNewComment, loadCommentsBatch } from "../../slices/feedSlice";
-import { getDate } from "../../helpers/getDateString";
-import { FaPenNib } from "react-icons/fa6";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { initialValuesComment } from "../../formik/Comment/initialValues";
-import { validationSchemaComment } from "../../formik/Comment/validationSchema";
 
 const Comments = ({ postId }) => {
-  const comments = useSelector((state) => {
-    return state.feed.posts.find((post) => {
-      return post.postId === postId;
-    }).comments;
-  });
   const token = useSelector((state) => {
     return state.auth.token;
   });
   const bottomRef = useRef(null);
   const handleReload = async () => {
-    await refetch();
-    requestAnimationFrame(() => {
-      bottomRef.current?.scrollIntoView({
-        behavior: "smooth",
+    try {
+      const result = await refetch().unwrap();
+      requestAnimationFrame(() => {
+        bottomRef.current?.scrollIntoView({
+          behavior: "smooth",
+        });
       });
-    });
+      setAllComments(result.comments);
+    } catch (err) {}
   };
-  const dispatch = useDispatch();
+  const [allComments, setAllComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const { data, error, isFetching, isSuccess, isError, refetch } =
     useGetCommentsQuery(postId, {
@@ -77,13 +70,19 @@ const Comments = ({ postId }) => {
         postId,
       }).unwrap();
       setNewCommentId(result.comment._id);
-      dispatch(addNewComment(result));
+      setAllComments((prev) => {
+        return [...prev, result.comment];
+      });
       resetForm();
     } catch (err) {}
   };
   useEffect(() => {
-    if (data) dispatch(loadCommentsBatch(data));
-  }, [data, isFetching]);
+    if (!data) return;
+    setAllComments((prev) => {
+      return [...data.comments];
+    });
+  }, [data]);
+
   useEffect(() => {
     if (!newCommentId) return;
 
@@ -92,7 +91,7 @@ const Comments = ({ postId }) => {
     }, 1500);
 
     return () => clearTimeout(t);
-  }, [newCommentId]);
+  }, [data, newCommentId]);
 
   return (
     <>
@@ -113,11 +112,12 @@ const Comments = ({ postId }) => {
       {showComments && (
         <CommentSectionStyled>
           {!isFetching &&
-            comments?.map((comment) => {
+            allComments?.map((comment) => {
+              console.log(allComments);
               return (
                 <CommentContainerStyled
-                  key={comment?.commentId}
-                  isNew={comment?.commentId === newCommentId}
+                  key={comment?._id}
+                  isNew={comment?._id === newCommentId}
                 >
                   <IconStyled>{comment?.username.charAt(0)}</IconStyled>
                   <NameAndCommentContainerStyled>
@@ -135,7 +135,7 @@ const Comments = ({ postId }) => {
               );
             })}
           <BottomRef ref={bottomRef} />
-          {!isFetching && comments?.length === 0 && (
+          {!isFetching && data?.comments?.length === 0 && (
             <NoCommentsMsgStyled>
               No hay comentarios en este post. Podrias ser el primero...
               <FaPenNib></FaPenNib>

@@ -17,7 +17,7 @@ export const FriendCardStyled = styled.div`
   width: 100%;
   border-bottom: solid 1px white;
   text-align: center;
-  padding: 0px 10px;
+  padding: 5px 10px;
   &:hover {
     background-color: #08081e;
     cursor: pointer;

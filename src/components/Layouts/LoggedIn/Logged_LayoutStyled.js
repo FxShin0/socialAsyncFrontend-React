@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { RL_NavbarStyled } from "../RegisterLogin/RL_LayoutStyled";
 import { FaUserCircle } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
+import { FaHome } from "react-icons/fa";
 
 export const LoggedNavbarStyled = styled(RL_NavbarStyled)``;
 
@@ -12,26 +13,36 @@ export const SearchFriendsInputStyled = styled.input`
   padding: 5px 10px;
 `;
 
-export const NavProfileAndLogoutContainerSylted = styled.div`
+export const NavProfileAndLogoutContainerStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
 `;
 
-export const NavProfileNameStyled = styled.p`
+export const NavButtonNameStyled = styled.p`
   font-size: 1.3rem;
   font-weight: 200;
   color: white;
   user-select: none;
 `;
 
-export const NavProfileIconStyled = styled(FaUserCircle)`
+export const NavUserIconStyled = styled(FaUserCircle)`
   color: white;
   font-size: 1.3rem;
 `;
 
-export const NavProfileContainerStyled = styled.div`
+export const NavLogoutIconStyled = styled(TbLogout2)`
+  color: white;
+  font-size: 1.3rem;
+`;
+
+export const NavHomeIconStyled = styled(FaHome)`
+  color: white;
+  font-size: 1.3rem;
+`;
+
+export const NavButtonContainerStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,10 +54,7 @@ export const NavProfileContainerStyled = styled.div`
   &:hover {
     background-color: white;
     border: solid 1px black;
-    ${NavProfileNameStyled} {
-      color: black;
-    }
-    ${NavProfileIconStyled} {
+    * {
       color: black;
     }
   }
@@ -61,19 +69,6 @@ export const LogoutTextStyled = styled.p`
 export const LogoutIconStyled = styled(TbLogout2)`
   color: white;
   font-size: 1.3rem;
-`;
-
-export const LogoutContainerStyled = styled(NavProfileContainerStyled)`
-  &:hover {
-    background-color: white;
-    color: black;
-    ${LogoutTextStyled} {
-      color: black;
-    }
-    ${LogoutIconStyled} {
-      color: black;
-    }
-  }
 `;
 
 export const LayoutContainerStyled = styled.div`

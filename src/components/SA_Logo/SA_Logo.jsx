@@ -5,9 +5,9 @@ import {
   WhiteLetterSpanStyled,
 } from "./SA_LogoStyled";
 
-const SA_Logo = ({ shouldpoint }) => {
+const SA_Logo = ({ onClick, shouldpoint }) => {
   return (
-    <LogoContainerStyled shouldpoint={shouldpoint}>
+    <LogoContainerStyled onClick={onClick} shouldpoint={shouldpoint}>
       <RedLetterSpanStyled>s</RedLetterSpanStyled>
       <WhiteLetterSpanStyled>ocial</WhiteLetterSpanStyled>
       <RedLetterSpanStyled>A</RedLetterSpanStyled>

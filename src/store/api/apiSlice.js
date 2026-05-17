@@ -40,7 +40,7 @@ export const apiSlice = createApi({
         },
       }),
       getUserFeed: builder.query({
-        query: (page) => {
+        query: ({ page }) => {
           return page ? `/feed?page=${page}` : "/feed";
         },
       }),
@@ -67,6 +67,13 @@ export const apiSlice = createApi({
           };
         },
       }),
+      getUserPosts: builder.query({
+        query: ({ user, page }) => {
+          console.log("en query");
+          console.log(user);
+          return page ? `/posts/${user}?page=${page}` : `/posts/${user}`;
+        },
+      }),
     };
   },
 });
@@ -79,4 +86,5 @@ export const {
   useGetCommentsQuery,
   usePostCommentMutation,
   useCreatePostMutation,
+  useGetUserPostsQuery,
 } = apiSlice;
