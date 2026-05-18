@@ -11,8 +11,8 @@ import {
   useGetUserPostsQuery,
 } from "../../store/api/apiSlice";
 import Comments from "../Comments/Comments";
-import { ErrorMessageStyled } from "../RL_Shared/RL_Styled";
 import {
+  ColdStartMsgStyled,
   CreatePostContainerStyled,
   CreatePostFormStyled,
   DateContainerStyled,
@@ -27,12 +27,20 @@ import {
   PostInputStyled,
   PostLoadingIconStyled,
   PostsContainerStyled,
+  PostsErrorMsgStyled,
   SendPostBtnStyled,
   SendPostFormContainerStyled,
   TextContainerStyled,
 } from "./PostSectionStyled";
+import { useDelayedLoading } from "../../customHooks/useDelayedLoading";
 
-const PostSection = ({ mode, canPost, endOfPostsMsg, postsAuthor }) => {
+const PostSection = ({
+  mode,
+  canPost,
+  endOfPostsMsg,
+  postsAuthor,
+  errorMsgHeader,
+}) => {
   const [newPostId, setNewPostId] = useState(null);
   const token = useSelector((state) => {
     return state.auth.token;
@@ -46,15 +54,26 @@ const PostSection = ({ mode, canPost, endOfPostsMsg, postsAuthor }) => {
     page,
     token,
   });
+  const showColdStart = useDelayedLoading(isFetching, 3000);
   const [
     createPost,
     { data: dataNewPost, isLoading: isLoadingNewPost, error: errorNewPost },
   ] = useCreatePostMutation();
+  useEffect(() => {
+    setAllPosts([]);
+    setPage(1);
+  }, [postsAuthor]);
 
   useEffect(() => {
     if (!data?.posts) return;
 
-    setAllPosts((prev) => [...prev, ...data.posts]);
+    setAllPosts((prev) => {
+      if (page === 1) {
+        return data.posts;
+      }
+
+      return [...prev, ...data.posts];
+    });
   }, [data, page]);
 
   const handleSubmit = async (values, { resetForm }) => {
@@ -113,6 +132,7 @@ const PostSection = ({ mode, canPost, endOfPostsMsg, postsAuthor }) => {
       )}
       <PostsContainerStyled>
         {!isError &&
+          !isFetching &&
           allPosts?.map((post) => {
             return (
               <PostContainerStyled
@@ -138,12 +158,20 @@ const PostSection = ({ mode, canPost, endOfPostsMsg, postsAuthor }) => {
             speed={0.75}
           ></FeedLoadingIcon>
         )}
-        {isError && (
-          <ErrorMessageStyled>
-            Ocurrio un error al obtener el feed: {error.data.msg}
-          </ErrorMessageStyled>
+        {showColdStart && (
+          <ColdStartMsgStyled>
+            El backend está despertando ☕. La primera solicitud puede tardar
+            hasta ~50 segundos...
+          </ColdStartMsgStyled>
         )}
-        {isSuccess && data?.posts?.length != 15 && (
+        {isError && (
+          <PostsErrorMsgStyled>
+            {error.data.codErr === 115
+              ? `${"Psst 👀... Si quieres ver sus posts agregalo como amigo!"}`
+              : `${errorMsgHeader + error.data.msg}`}
+          </PostsErrorMsgStyled>
+        )}
+        {!isFetching && isSuccess && data?.posts?.length != 15 && (
           <>
             <EndOfFeedIconStyled></EndOfFeedIconStyled>
             <EndOfFeedMsg>{endOfPostsMsg}</EndOfFeedMsg>

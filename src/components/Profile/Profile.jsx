@@ -20,6 +20,7 @@ const Profile = () => {
         canPost={username === user}
         endOfPostsMsg="Parece que ya no hay mas contenido que mostrar."
         postsAuthor={username}
+        errorMsgHeader="Ocurrio un error al mostrar los posts del perfil: "
       ></PostSection>
     </>
   );

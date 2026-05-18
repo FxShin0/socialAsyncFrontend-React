@@ -6,13 +6,6 @@ import { FaHome } from "react-icons/fa";
 
 export const LoggedNavbarStyled = styled(RL_NavbarStyled)``;
 
-export const SearchFriendsInputStyled = styled.input`
-  width: 30%;
-  height: 60%;
-  border-radius: 15px;
-  padding: 5px 10px;
-`;
-
 export const NavProfileAndLogoutContainerStyled = styled.div`
   display: flex;
   justify-content: center;

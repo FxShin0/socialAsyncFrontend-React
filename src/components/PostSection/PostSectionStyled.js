@@ -1,8 +1,20 @@
-import styled, { css, keyframes } from "styled-components";
-import { GiFinishLine } from "react-icons/gi";
-import { RL_LoadingIconStyled } from "../RL_Shared/RL_Styled";
 import { Form } from "formik";
-import { glow } from "../Comments/CommentsStyled";
+import { GiFinishLine } from "react-icons/gi";
+import styled, { css, keyframes } from "styled-components";
+import { RL_LoadingIconStyled } from "../RL_Shared/RL_Styled";
+import LoadingIcons from "react-loading-icons";
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+`;
 
 export const PostsContainerStyled = styled.div`
   width: 100%;
@@ -96,6 +108,12 @@ export const CommentButton = styled.button`
   }
 `;
 
+export const PostsErrorMsgStyled = styled.p`
+  font-weight: 300;
+  font-size: 1.6rem;
+  color: white;
+`;
+
 export const EndOfFeedIconStyled = styled(GiFinishLine)`
   color: white;
   font-size: 3rem;
@@ -106,7 +124,14 @@ export const EndOfFeedMsg = styled.p`
   font-size: 1.3rem;
 `;
 
-export const FeedLoadingIcon = styled(RL_LoadingIconStyled)`
+export const ColdStartMsgStyled = styled(EndOfFeedMsg)`
+  animation: ${fadeIn} 0.3s ease;
+  text-align: center;
+`;
+
+export const FeedLoadingIcon = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
   height: 100px;
   width: 100px;
 `;
@@ -197,7 +222,9 @@ export const PostErrorMessageStyled = styled.p`
   color: red;
 `;
 
-export const PostLoadingIconStyled = styled(RL_LoadingIconStyled)`
+export const PostLoadingIconStyled = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
   width: 60px;
   height: 60px;
 `;

@@ -1,8 +1,19 @@
 import { ErrorMessage, Field, Form } from "formik";
 import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import { styled, keyframes } from "styled-components";
 import LoadingIcons from "react-loading-icons";
+import { ColdStartMsgStyled } from "../PostSection/PostSectionStyled";
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
 
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+`;
 export const FormStyled = styled(Form)`
   display: flex;
   flex-direction: column;
@@ -21,6 +32,12 @@ export const ErrorMessageStyled = styled.p`
   color: red;
   font-weight: 300;
   font-size: 0.9rem;
+`;
+
+export const RL_ColdStartMsgStyled = styled(ColdStartMsgStyled)`
+  font-size: 0.9rem;
+  text-align: center;
+  animation: ${fadeIn} 0.3s ease;
 `;
 
 export const InputAndErrorContainerStyled = styled.div`

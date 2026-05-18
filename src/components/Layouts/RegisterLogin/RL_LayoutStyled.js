@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const RL_NavbarStyled = styled.nav`
   height: 7vh;
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -10,12 +10,12 @@ import {
   MainContainerStyled,
   NavButtonContainerStyled,
   NavProfileAndLogoutContainerStyled,
-  SearchFriendsInputStyled,
   NavUserIconStyled,
   NavLogoutIconStyled,
   NavHomeIconStyled,
   NavButtonNameStyled,
 } from "./Logged_LayoutStyled";
+import Search from "../../Search/Search";
 
 const Logged_Layout = () => {
   const navigate = useNavigate();
@@ -32,10 +32,7 @@ const Logged_Layout = () => {
           }}
           shouldpoint="true"
         ></SA_Logo>
-        <SearchFriendsInputStyled
-          placeholder="Buscar personas..."
-          type="text"
-        ></SearchFriendsInputStyled>
+        <Search></Search>
         <NavProfileAndLogoutContainerStyled>
           <NavButtonContainerStyled
             onClick={() => {

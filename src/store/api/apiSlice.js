@@ -69,9 +69,13 @@ export const apiSlice = createApi({
       }),
       getUserPosts: builder.query({
         query: ({ user, page }) => {
-          console.log("en query");
-          console.log(user);
           return page ? `/posts/${user}?page=${page}` : `/posts/${user}`;
+        },
+      }),
+      searchUser: builder.query({
+        query: (user) => {
+          console.log("lanzado");
+          return user ? `/search?username=${user}` : "/search";
         },
       }),
     };
@@ -87,4 +91,5 @@ export const {
   usePostCommentMutation,
   useCreatePostMutation,
   useGetUserPostsQuery,
+  useSearchUserQuery,
 } = apiSlice;

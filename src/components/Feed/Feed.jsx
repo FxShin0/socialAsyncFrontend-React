@@ -15,6 +15,7 @@ const Feed = () => {
       endOfPostsMsg="Parece que ya no hay mas contenido que mostrar. Agrega mas amigos
               para ver sus publicaciones!"
       postsAuthor={user}
+      errorMsgHeader="Ocurrio un error al mostrar el feed: "
     ></PostSection>
   );
 };

@@ -3,6 +3,7 @@ import { IoSend } from "react-icons/io5";
 import { IoReload } from "react-icons/io5";
 import { RL_LoadingIconStyled } from "../RL_Shared/RL_Styled";
 import { ErrorMessage, Field, Form } from "formik";
+import LoadingIcons from "react-loading-icons";
 
 export const CommentSectionStyled = styled.div`
   display: flex;
@@ -100,7 +101,9 @@ export const NoCommentsMsgStyled = styled.p`
   color: #ffffffb3;
 `;
 
-export const CommentLoadingIconStyled = styled(RL_LoadingIconStyled)`
+export const CommentLoadingIconStyled = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
   width: 100px;
   height: 100px;
 `;

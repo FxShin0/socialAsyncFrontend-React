@@ -14,6 +14,7 @@ import {
   RL_RedirectSignStyled,
   RL_SignStyled,
   RL_LoadingIconStyled,
+  RL_ColdStartMsgStyled,
 } from "../RL_Shared/RL_Styled";
 import RL_FieldInput from "../RL_Shared/RL_FieldInput";
 import {
@@ -23,6 +24,7 @@ import {
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import { useDelayedLoading } from "../../customHooks/useDelayedLoading";
 
 const Register = () => {
   const [register, { data, isLoading, error }] = useRegisterMutation();
@@ -30,6 +32,8 @@ const Register = () => {
     login,
     { data: dataLogin, isLoading: isLoadingLogin, error: errorLogin },
   ] = useLoginMutation();
+  const registerShowColdStart = useDelayedLoading(isLoading, 3000);
+  const loginShowColdStart = useDelayedLoading(isLoadingLogin, 3000);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = async (values, { resetForm }) => {
@@ -91,6 +95,12 @@ const Register = () => {
           strokeOpacity={0.125}
           speed={0.75}
         ></RL_LoadingIconStyled>
+      )}
+      {(loginShowColdStart || registerShowColdStart) && (
+        <RL_ColdStartMsgStyled>
+          El backend está despertando ☕. La primera solicitud puede tardar
+          hasta ~50 segundos...
+        </RL_ColdStartMsgStyled>
       )}
 
       {error && <RL_ErrorMsgStyled>error.data.msg</RL_ErrorMsgStyled>}

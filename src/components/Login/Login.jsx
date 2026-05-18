@@ -1,26 +1,28 @@
-import React from "react";
-import {
-  FormStyled,
-  RL_ContainerStyled,
-  RL_SignStyled,
-  RL_ButtonStyled,
-  RL_RedirectSignStyled,
-  RL_ErrorMsgStyled,
-  RL_LoadingIconStyled,
-} from "../RL_Shared/RL_Styled";
 import { Formik } from "formik";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDelayedLoading } from "../../customHooks/useDelayedLoading";
 import { initialValuesLogin } from "../../formik/Login/initialValues";
 import { validationSchemaLogin } from "../../formik/Login/validationSchema";
-import RL_FieldInput from "../RL_Shared/RL_FieldInput";
-import { useLoginMutation } from "../../store/api/apiSlice";
-import { useDispatch } from "react-redux";
 import { setUserData } from "../../slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../store/api/apiSlice";
+import RL_FieldInput from "../RL_Shared/RL_FieldInput";
+import {
+  FormStyled,
+  RL_ButtonStyled,
+  RL_ColdStartMsgStyled,
+  RL_ContainerStyled,
+  RL_ErrorMsgStyled,
+  RL_LoadingIconStyled,
+  RL_RedirectSignStyled,
+  RL_SignStyled,
+} from "../RL_Shared/RL_Styled";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login, { data, isLoading, error }] = useLoginMutation();
+  const showColdStart = useDelayedLoading(isLoading, 3000);
   const handleSubmit = async (values, { resetForm }) => {
     try {
       const result = await login({
@@ -72,6 +74,12 @@ const Login = () => {
           strokeOpacity={0.125}
           speed={0.75}
         ></RL_LoadingIconStyled>
+      )}
+      {showColdStart && (
+        <RL_ColdStartMsgStyled>
+          El backend está despertando ☕. La primera solicitud puede tardar
+          hasta ~50 segundos...
+        </RL_ColdStartMsgStyled>
       )}
     </RL_ContainerStyled>
   );
