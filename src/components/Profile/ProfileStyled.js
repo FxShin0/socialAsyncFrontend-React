@@ -20,8 +20,7 @@ export const UsernameStyled = styled.p`
 export const NameStyled = styled.p`
   font-size: 1.5rem;
   font-weight: 300;
-  color: white;
-  opacity: 60%;
+  color: gray;
   text-align: center;
 `;
 

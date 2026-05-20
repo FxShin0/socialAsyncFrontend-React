@@ -77,8 +77,7 @@ export const ResultUsernameStyled = styled.p`
 export const ResultNameStyled = styled.p`
   font-size: 0.8;
   font-weight: 200;
-  color: white;
-  opacity: 50%;
+  color: gray;
 `;
 
 export const NoResultsMsgStyled = styled.p`
