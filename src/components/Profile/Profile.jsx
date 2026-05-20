@@ -8,6 +8,7 @@ import {
   NameStyled,
   StatsContainerStyled,
   StatTextStyled,
+  ProfileLoadingIconStyled,
 } from "./ProfileStyled";
 import { useGetProfileInfoQuery } from "../../store/api/apiSlice";
 import { BsFillFileEarmarkPostFill } from "react-icons/bs";
@@ -25,23 +26,28 @@ const Profile = () => {
   return (
     <>
       <ProfileStyled>
-        <UsernameStyled>{username}</UsernameStyled>
-        <NameStyled>{data?.nombre}</NameStyled>
-        <StatsContainerStyled>
-          <StatTextStyled>
-            <FaUserFriends></FaUserFriends> {data?.friendsCount}{" "}
-            {data?.friendsCount === 1 ? "amigo" : "amigos"} |{" "}
-          </StatTextStyled>
-          <StatTextStyled>
-            {" "}
-            <BsFillFileEarmarkPostFill></BsFillFileEarmarkPostFill>{" "}
-            {data?.postsCount} {data?.postsCount === 1 ? "post" : "posts"} |
-          </StatTextStyled>
-          <StatTextStyled>
-            <FaCommentDots></FaCommentDots> {data?.commentsCount}{" "}
-            {data?.commentsCount === 1 ? "comentario" : "comentarios"}
-          </StatTextStyled>
-        </StatsContainerStyled>
+        {isFetching && <ProfileLoadingIconStyled></ProfileLoadingIconStyled>}
+        {!isFetching && (
+          <>
+            <UsernameStyled>{username}</UsernameStyled>
+            <NameStyled>{data?.nombre}</NameStyled>
+            <StatsContainerStyled>
+              <StatTextStyled>
+                <FaUserFriends></FaUserFriends> {data?.friendsCount}{" "}
+                {data?.friendsCount === 1 ? "amigo" : "amigos"} |{" "}
+              </StatTextStyled>
+              <StatTextStyled>
+                {" "}
+                <BsFillFileEarmarkPostFill></BsFillFileEarmarkPostFill>{" "}
+                {data?.postsCount} {data?.postsCount === 1 ? "post" : "posts"} |
+              </StatTextStyled>
+              <StatTextStyled>
+                <FaCommentDots></FaCommentDots> {data?.commentsCount}{" "}
+                {data?.commentsCount === 1 ? "comentario" : "comentarios"}
+              </StatTextStyled>
+            </StatsContainerStyled>
+          </>
+        )}
       </ProfileStyled>
       <PostSection
         mode="user"

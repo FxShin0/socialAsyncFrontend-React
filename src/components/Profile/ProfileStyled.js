@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import LoadingIcons from "react-loading-icons";
 
 export const ProfileStyled = styled.div`
   display: flex;
@@ -41,4 +42,11 @@ export const CreationDateStyled = styled.p`
   color: white;
   text-align: center;
   opacity: 80%;
+`;
+
+export const ProfileLoadingIconStyled = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
+  height: 95px;
+  width: 95px;
 `;
