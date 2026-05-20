@@ -3,6 +3,7 @@ import {
   FriendCardStyled,
   FriendIconStyled,
   FriendsContainerStyled,
+  FriendsTitleStyled,
   NameStyled,
   NoFriendsMessage,
   UsernameAndNameContainerStyled,
@@ -38,6 +39,7 @@ const Friends = () => {
   }, [error]);
   return (
     <FriendsContainerStyled>
+      <FriendsTitleStyled>Amigos</FriendsTitleStyled>
       {isSuccess &&
         data.friendList.map((friend) => {
           return (

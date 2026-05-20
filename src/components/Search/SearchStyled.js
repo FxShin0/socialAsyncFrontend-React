@@ -61,11 +61,24 @@ export const IconStyled = styled.p`
   flex-shrink: 0;
 `;
 
-export const ResultNameStyled = styled.p`
+export const UsernameAndNameContainerStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+`;
+
+export const ResultUsernameStyled = styled.p`
   font-size: 1.6rem;
   font-weight: 300;
   color: white;
-  text-align: center;
+`;
+
+export const ResultNameStyled = styled.p`
+  font-size: 0.8;
+  font-weight: 200;
+  color: white;
+  opacity: 50%;
 `;
 
 export const NoResultsMsgStyled = styled.p`

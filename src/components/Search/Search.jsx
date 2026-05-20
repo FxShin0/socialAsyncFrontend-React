@@ -5,10 +5,12 @@ import {
   NoResultsMsgStyled,
   ResultCardStyled,
   ResultNameStyled,
+  ResultUsernameStyled,
   SearchContainerStyled,
   SearchFriendsInputStyled,
   SearchLoadingIconStyled,
   SearchResultsContainerStyled,
+  UsernameAndNameContainerStyled,
 } from "./SearchStyled";
 import { useSearchUserQuery } from "../../store/api/apiSlice";
 import { useNavigate } from "react-router-dom";
@@ -73,7 +75,12 @@ const Search = () => {
                 }}
               >
                 <IconStyled>{result?.username?.charAt(0)}</IconStyled>
-                <ResultNameStyled>{result?.username}</ResultNameStyled>
+                <UsernameAndNameContainerStyled>
+                  <ResultUsernameStyled>
+                    {result?.username}
+                  </ResultUsernameStyled>
+                  <ResultNameStyled>{result?.nombre}</ResultNameStyled>
+                </UsernameAndNameContainerStyled>
               </ResultCardStyled>
             );
           })}

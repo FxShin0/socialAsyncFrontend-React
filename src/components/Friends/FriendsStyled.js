@@ -7,6 +7,17 @@ export const FriendsContainerStyled = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
+  gap: 10px;
+`;
+
+export const FriendsTitleStyled = styled.p`
+  font-size: 1.4rem;
+  color: white;
+  font-weight: 100;
+  border-bottom: solid 1px white;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 5px;
 `;
 
 export const FriendCardStyled = styled.div`

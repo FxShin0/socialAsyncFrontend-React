@@ -58,6 +58,7 @@ export const apiSlice = createApi({
             body: commentInfo, //{token, content, postId}
           };
         },
+        invalidatesTags: ["profileInfo"],
       }),
       createPost: builder.mutation({
         query: (postInfo) => {
@@ -67,7 +68,7 @@ export const apiSlice = createApi({
             body: postInfo, //{token, content}
           };
         },
-        invalidatesTags: ["userPosts", "feed"],
+        invalidatesTags: ["userPosts", "feed", "profileInfo"],
       }),
       getUserPosts: builder.query({
         query: ({ user, page }) => {
@@ -77,9 +78,14 @@ export const apiSlice = createApi({
       }),
       searchUser: builder.query({
         query: (user) => {
-          console.log("lanzado");
           return user ? `/search?username=${user}` : "/search";
         },
+      }),
+      getProfileInfo: builder.query({
+        query: (user) => {
+          return `/profileInfo/${user}`;
+        },
+        providesTags: ["profileInfo"],
       }),
     };
   },
@@ -95,4 +101,5 @@ export const {
   useCreatePostMutation,
   useGetUserPostsQuery,
   useSearchUserQuery,
+  useGetProfileInfoQuery,
 } = apiSlice;

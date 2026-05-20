@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ProfileStyled = styled.div`
   display: flex;
+  margin-top: 5px;
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
@@ -14,6 +15,25 @@ export const UsernameStyled = styled.p`
   font-weight: 600;
   color: white;
   text-align: center;
+`;
+
+export const NameStyled = styled.p`
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: white;
+  opacity: 60%;
+  text-align: center;
+`;
+
+export const StatsContainerStyled = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
+export const StatTextStyled = styled.p`
+  font-size: 1rem;
+  font-weight: 200;
+  color: gray;
 `;
 
 export const CreationDateStyled = styled.p`

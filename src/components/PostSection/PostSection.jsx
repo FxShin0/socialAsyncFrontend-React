@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useDelayedLoading } from "../../customHooks/useDelayedLoading";
 import { initialValuesPost } from "../../formik/Post/initialValues";
 import { validationSchemaPost } from "../../formik/Post/validationSchema";
 import { autoExpandTextArea } from "../../helpers/autoExpandTextArea";
@@ -32,7 +33,6 @@ import {
   SendPostFormContainerStyled,
   TextContainerStyled,
 } from "./PostSectionStyled";
-import { useDelayedLoading } from "../../customHooks/useDelayedLoading";
 
 const PostSection = ({
   mode,
