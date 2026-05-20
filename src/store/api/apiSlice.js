@@ -40,9 +40,10 @@ export const apiSlice = createApi({
         },
       }),
       getUserFeed: builder.query({
-        query: ({ page }) => {
+        query: (page) => {
           return page ? `/feed?page=${page}` : "/feed";
         },
+        providesTags: ["feed"],
       }),
       getComments: builder.query({
         query: (postId) => {
@@ -66,11 +67,13 @@ export const apiSlice = createApi({
             body: postInfo, //{token, content}
           };
         },
+        invalidatesTags: ["userPosts", "feed"],
       }),
       getUserPosts: builder.query({
         query: ({ user, page }) => {
           return page ? `/posts/${user}?page=${page}` : `/posts/${user}`;
         },
+        providesTags: ["userPosts"],
       }),
       searchUser: builder.query({
         query: (user) => {

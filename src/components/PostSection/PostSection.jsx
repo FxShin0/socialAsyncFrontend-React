@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { initialValuesPost } from "../../formik/Post/initialValues";
 import { validationSchemaPost } from "../../formik/Post/validationSchema";
 import { autoExpandTextArea } from "../../helpers/autoExpandTextArea";
@@ -42,18 +42,19 @@ const PostSection = ({
   errorMsgHeader,
 }) => {
   const [newPostId, setNewPostId] = useState(null);
+  const dispatch = useDispatch();
   const token = useSelector((state) => {
     return state.auth.token;
   });
-  const queryFunction =
-    mode === "feed" ? useGetUserFeedQuery : useGetUserPostsQuery;
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(1);
-  const { data, error, isFetching, isSuccess, isError } = queryFunction({
-    user: postsAuthor,
-    page,
-    token,
-  });
+  const feedQuery = useGetUserFeedQuery(page, { skip: mode !== "feed" });
+  const userPostsQuery = useGetUserPostsQuery(
+    { user: postsAuthor, page },
+    { skip: mode === "feed" },
+  );
+  const { data, error, isFetching, isLoading, isSuccess, isError } =
+    mode === "feed" ? feedQuery : userPostsQuery;
   const showColdStart = useDelayedLoading(isFetching, 3000);
   const [
     createPost,
@@ -132,7 +133,7 @@ const PostSection = ({
       )}
       <PostsContainerStyled>
         {!isError &&
-          !isFetching &&
+          !isLoading &&
           allPosts?.map((post) => {
             return (
               <PostContainerStyled
@@ -151,7 +152,7 @@ const PostSection = ({
               </PostContainerStyled>
             );
           })}
-        {isFetching && (
+        {isLoading && page === 1 && (
           <FeedLoadingIcon
             stroke="#98ff98"
             strokeOpacity={0.125}
