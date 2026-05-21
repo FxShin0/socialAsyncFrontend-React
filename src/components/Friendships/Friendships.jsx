@@ -9,9 +9,17 @@ import {
   FriendSectionContainerStyled,
   FriendshipLoadingIcon,
 } from "./FriendshipsStyled";
-import { useGetFriendRequestStatusQuery } from "../../store/api/apiSlice";
+import {
+  useGetFriendRequestStatusQuery,
+  useSendFriendRequestMutation,
+} from "../../store/api/apiSlice";
+import { useSelector } from "react-redux";
+import SendFriendRequest from "./SendFriendRequest/SendFriendRequest";
 
 const Friendships = ({ loggedUser, profileUser }) => {
+  const token = useSelector((state) => {
+    return state.auth.token;
+  });
   const { data, error, currentData, isFetching, isSuccess, isError, refetch } =
     useGetFriendRequestStatusQuery(profileUser, {
       skip: loggedUser === profileUser,
@@ -30,14 +38,11 @@ const Friendships = ({ loggedUser, profileUser }) => {
       {currentData && (
         <>
           {data?.estado === "inexistente" && (
-            <>
-              <ActionFriendBtnStyled>
-                <IoIosPersonAdd></IoIosPersonAdd> Agregar Amigo
-              </ActionFriendBtnStyled>
-              <FriendMessageStyled>
-                Psst 👀... Si quieres ver sus posts agregalo como amigo!
-              </FriendMessageStyled>
-            </>
+            <SendFriendRequest
+              token={token}
+              username={profileUser}
+              isFetching={isFetching}
+            ></SendFriendRequest>
           )}
           {data?.estado === "amigos" && (
             <ActionFriendBtnStyled remove>

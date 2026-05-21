@@ -91,6 +91,17 @@ export const apiSlice = createApi({
         query: (user) => {
           return `/friend/requestStatus/${user}`;
         },
+        providesTags: ["friendStatus"],
+      }),
+      sendFriendRequest: builder.mutation({
+        query: (requestInfo) => {
+          return {
+            url: "/friend",
+            method: "POST",
+            body: requestInfo, //{token,username}
+          };
+        },
+        invalidatesTags: ["friendStatus"],
       }),
     };
   },
@@ -108,4 +119,5 @@ export const {
   useSearchUserQuery,
   useGetProfileInfoQuery,
   useGetFriendRequestStatusQuery,
+  useSendFriendRequestMutation,
 } = apiSlice;
