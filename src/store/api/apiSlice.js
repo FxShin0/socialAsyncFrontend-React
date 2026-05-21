@@ -38,6 +38,7 @@ export const apiSlice = createApi({
         query: () => {
           return "/friend/list";
         },
+        providesTags: ["friendList"],
       }),
       getUserFeed: builder.query({
         query: (page) => {
@@ -103,6 +104,16 @@ export const apiSlice = createApi({
         },
         invalidatesTags: ["friendStatus"],
       }),
+      acceptOrRejectFriendRequest: builder.mutation({
+        query: (requestInfo) => {
+          return {
+            url: "/friend/acceptOrReject",
+            method: "POST",
+            body: requestInfo, //{token, username, action}
+          };
+        },
+        invalidatesTags: ["friendStatus", "userPosts", "feed", "friendList"],
+      }),
     };
   },
 });
@@ -120,4 +131,5 @@ export const {
   useGetProfileInfoQuery,
   useGetFriendRequestStatusQuery,
   useSendFriendRequestMutation,
+  useAcceptOrRejectFriendRequestMutation,
 } = apiSlice;

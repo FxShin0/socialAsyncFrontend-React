@@ -55,6 +55,7 @@ export const FriendMessageStyled = styled.p`
   font-size: 1.3rem;
   color: white;
   font-weight: 300;
+  text-align: center;
 `;
 
 export const ReloadFriendshipStatusBtnStyled = styled(IoReload)`
@@ -72,4 +73,11 @@ export const FriendshipLoadingIcon = styled(LoadingIcons.Puff)`
   justify-self: center;
   width: 75px;
   height: 75px;
+`;
+
+export const ActionFriendshipLoadingIcon = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
+  width: 50px;
+  height: 50px;
 `;

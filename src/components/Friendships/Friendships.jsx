@@ -15,6 +15,7 @@ import {
 } from "../../store/api/apiSlice";
 import { useSelector } from "react-redux";
 import SendFriendRequest from "./SendFriendRequest/SendFriendRequest";
+import AcceptOrRejectFriendRequest from "./acceptOrRejectFriendRequest/AcceptOrRejectFriendRequest";
 
 const Friendships = ({ loggedUser, profileUser }) => {
   const token = useSelector((state) => {
@@ -45,9 +46,14 @@ const Friendships = ({ loggedUser, profileUser }) => {
             ></SendFriendRequest>
           )}
           {data?.estado === "amigos" && (
-            <ActionFriendBtnStyled remove>
-              <IoPersonRemoveSharp></IoPersonRemoveSharp> Eliminar amigo
-            </ActionFriendBtnStyled>
+            <>
+              <FriendMessageStyled>
+                {profileUser} y tu son amigos 😄...
+              </FriendMessageStyled>
+              <ActionFriendBtnStyled remove>
+                <IoPersonRemoveSharp></IoPersonRemoveSharp> Eliminar amigo
+              </ActionFriendBtnStyled>
+            </>
           )}
           {data?.estado === "pendiente" &&
             data?.friendRequest?.emitterUsername === loggedUser && (
@@ -58,20 +64,11 @@ const Friendships = ({ loggedUser, profileUser }) => {
             )}
           {data?.estado === "pendiente" &&
             data?.friendRequest?.recieverUsername === loggedUser && (
-              <>
-                <FriendMessageStyled>
-                  Tienes una solicitud de amistad pendiente de {profileUser}{" "}
-                  👀...
-                </FriendMessageStyled>
-                <DoubleActionBtnContainerStyled>
-                  <ActionFriendBtnStyled>
-                    <IoIosPersonAdd></IoIosPersonAdd> Aceptar
-                  </ActionFriendBtnStyled>
-                  <ActionFriendBtnStyled remove>
-                    <IoPersonRemoveSharp></IoPersonRemoveSharp> Rechazar
-                  </ActionFriendBtnStyled>
-                </DoubleActionBtnContainerStyled>
-              </>
+              <AcceptOrRejectFriendRequest
+                token={token}
+                user={profileUser}
+                isFetching={isFetching}
+              ></AcceptOrRejectFriendRequest>
             )}
           {data?.estado === "rechazado" &&
             data?.friendRequest?.emitterUsername === loggedUser && (
@@ -83,8 +80,8 @@ const Friendships = ({ loggedUser, profileUser }) => {
             data?.friendRequest?.recieverUsername === loggedUser && (
               <>
                 <FriendMessageStyled>
-                  Habias rechazado una solicitud previa de {profileUser} pero
-                  puedes enviarle una 👀...
+                  Rechazaste la solicitud de amistad de {profileUser} pero
+                  puedes enviarle una si cambias de opinion 👀...
                 </FriendMessageStyled>
                 <ActionFriendBtnStyled>
                   <IoIosPersonAdd></IoIosPersonAdd> Agregar Amigo

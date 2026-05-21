@@ -1,11 +1,11 @@
 import React from "react";
 import {
   ActionFriendBtnStyled,
+  ActionFriendshipLoadingIcon,
   FriendMessageStyled,
 } from "../FriendshipsStyled";
 import { IoIosPersonAdd } from "react-icons/io";
 import { useSendFriendRequestMutation } from "../../../store/api/apiSlice";
-import { SendFriendshipLoadingIcon } from "./SendFriendRequestStyled";
 
 const SendFriendRequest = ({ token, username, isFetching }) => {
   const [sendFriendRequest, { data, isLoading, error }] =
@@ -21,11 +21,11 @@ const SendFriendRequest = ({ token, username, isFetching }) => {
   return (
     <>
       {isLoading && (
-        <SendFriendshipLoadingIcon
+        <ActionFriendshipLoadingIcon
           stroke="#3b9403"
           strokeOpacity={0.125}
           speed={0.75}
-        ></SendFriendshipLoadingIcon>
+        ></ActionFriendshipLoadingIcon>
       )}
       {!isLoading && !isFetching && !error && (
         <ActionFriendBtnStyled onClick={handleClick}>
