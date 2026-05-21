@@ -1,9 +1,7 @@
-import styled, { keyframes, css } from "styled-components";
-import { IoSend } from "react-icons/io5";
-import { IoReload } from "react-icons/io5";
-import { RL_LoadingIconStyled } from "../RL_Shared/RL_Styled";
-import { ErrorMessage, Field, Form } from "formik";
+import { Form } from "formik";
+import { IoReload, IoSend } from "react-icons/io5";
 import LoadingIcons from "react-loading-icons";
+import styled, { css, keyframes } from "styled-components";
 
 export const CommentSectionStyled = styled.div`
   display: flex;

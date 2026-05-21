@@ -23,6 +23,8 @@ export const PostsContainerStyled = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  border-top: solid 3px white;
+  padding-top: 10px;
 `;
 
 export const PostContainerStyled = styled.div`
@@ -121,6 +123,7 @@ export const EndOfFeedIconStyled = styled(GiFinishLine)`
 
 export const EndOfFeedMsg = styled.p`
   color: white;
+  text-align: center;
   font-size: 1.3rem;
 `;
 

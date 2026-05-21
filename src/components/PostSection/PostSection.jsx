@@ -7,6 +7,7 @@ import { validationSchemaPost } from "../../formik/Post/validationSchema";
 import { autoExpandTextArea } from "../../helpers/autoExpandTextArea";
 import { getDate } from "../../helpers/getDateString";
 import {
+  apiSlice,
   useCreatePostMutation,
   useGetUserFeedQuery,
   useGetUserPostsQuery,
@@ -33,6 +34,7 @@ import {
   SendPostFormContainerStyled,
   TextContainerStyled,
 } from "./PostSectionStyled";
+import { logout, setSessionExpired } from "../../slices/authSlice";
 
 const PostSection = ({
   mode,
@@ -64,6 +66,13 @@ const PostSection = ({
     setAllPosts([]);
     setPage(1);
   }, [postsAuthor]);
+  useEffect(() => {
+    if (error?.data?.msg == "Token no valido") {
+      dispatch(setSessionExpired(true));
+      dispatch(apiSlice.util.resetApiState());
+      dispatch(logout());
+    }
+  }, [error]);
 
   useEffect(() => {
     if (!data?.posts) return;
@@ -168,7 +177,7 @@ const PostSection = ({
         {isError && (
           <PostsErrorMsgStyled>
             {error.data.codErr === 115
-              ? `${"Psst 👀... Si quieres ver sus posts agregalo como amigo!"}`
+              ? `${"🔒 No tienes permisos para ver estos posts. 🔒"}`
               : `${errorMsgHeader + error.data.msg}`}
           </PostsErrorMsgStyled>
         )}

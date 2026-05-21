@@ -87,6 +87,11 @@ export const apiSlice = createApi({
         },
         providesTags: ["profileInfo"],
       }),
+      getFriendRequestStatus: builder.query({
+        query: (user) => {
+          return `/friend/requestStatus/${user}`;
+        },
+      }),
     };
   },
 });
@@ -102,4 +107,5 @@ export const {
   useGetUserPostsQuery,
   useSearchUserQuery,
   useGetProfileInfoQuery,
+  useGetFriendRequestStatusQuery,
 } = apiSlice;

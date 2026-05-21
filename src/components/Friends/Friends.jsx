@@ -21,26 +21,17 @@ import { logout, setSessionExpired } from "../../slices/authSlice";
 import { IconStyled } from "../PostSection/PostSectionStyled";
 
 const Friends = () => {
-  const { data, error, isFetching, isSuccess, isError } = useGetFriendsQuery(
-    undefined,
-    { refetchOnMountOrArgChange: true },
-  );
+  const { data, error, isFetching, currentData, isSuccess, isError } =
+    useGetFriendsQuery(undefined, { refetchOnMountOrArgChange: true });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const username = useSelector((state) => {
     return state.auth.user;
   });
-  useEffect(() => {
-    if (error?.data?.msg == "Token no valido") {
-      dispatch(setSessionExpired(true));
-      dispatch(apiSlice.util.resetApiState());
-      dispatch(logout());
-    }
-  }, [error]);
   return (
     <FriendsContainerStyled>
       <FriendsTitleStyled>Amigos</FriendsTitleStyled>
-      {isSuccess &&
+      {currentData &&
         data.friendList.map((friend) => {
           return (
             <FriendCardStyled
@@ -73,7 +64,7 @@ const Friends = () => {
             </FriendCardStyled>
           );
         })}
-      {isFetching && (
+      {isFetching && !currentData && (
         <RL_LoadingIconStyled
           stroke="#98ff98"
           strokeOpacity={0.125}
@@ -85,7 +76,7 @@ const Friends = () => {
           Ocurrio un error al obtener la lista de amigos: {error.msg}
         </ErrorMessageStyled>
       )}
-      {data?.friendList?.length === 0 && (
+      {currentData?.friendList?.length === 0 && (
         <NoFriendsMessage>No tienes amigos agregados 👀</NoFriendsMessage>
       )}
     </FriendsContainerStyled>

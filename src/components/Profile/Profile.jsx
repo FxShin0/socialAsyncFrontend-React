@@ -14,20 +14,32 @@ import { useGetProfileInfoQuery } from "../../store/api/apiSlice";
 import { BsFillFileEarmarkPostFill } from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
 import { FaCommentDots } from "react-icons/fa";
+import Friendships from "../Friendships/Friendships";
 
 const Profile = () => {
   const { username } = useParams();
   const user = useSelector((state) => {
     return state.auth.user;
   });
-  const { data, error, isFetching, isLoading, isSuccess, isError } =
-    useGetProfileInfoQuery(username);
+  const {
+    data,
+    error,
+    currentData,
+    isFetching,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetProfileInfoQuery(username, {
+    pollingInterval: 30000,
+  });
 
   return (
     <>
       <ProfileStyled>
-        {isFetching && <ProfileLoadingIconStyled></ProfileLoadingIconStyled>}
-        {!isFetching && (
+        {isFetching && !currentData && (
+          <ProfileLoadingIconStyled></ProfileLoadingIconStyled>
+        )}
+        {currentData && (
           <>
             <UsernameStyled>{username}</UsernameStyled>
             <NameStyled>{data?.nombre}</NameStyled>
@@ -46,6 +58,12 @@ const Profile = () => {
                 {data?.commentsCount === 1 ? "comentario" : "comentarios"}
               </StatTextStyled>
             </StatsContainerStyled>
+            {user != username && (
+              <Friendships
+                loggedUser={user}
+                profileUser={username}
+              ></Friendships>
+            )}
           </>
         )}
       </ProfileStyled>

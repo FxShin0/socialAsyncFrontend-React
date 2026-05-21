@@ -16,6 +16,7 @@ import {
   NavButtonNameStyled,
 } from "./Logged_LayoutStyled";
 import Search from "../../Search/Search";
+import { apiSlice } from "../../../store/api/apiSlice";
 
 const Logged_Layout = () => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const Logged_Layout = () => {
           <NavButtonContainerStyled
             onClick={() => {
               dispatch(logout());
+              dispatch(apiSlice.util.resetApiState());
             }}
           >
             <NavButtonNameStyled>Cerrar sesión</NavButtonNameStyled>
