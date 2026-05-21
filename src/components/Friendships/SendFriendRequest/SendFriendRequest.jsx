@@ -7,7 +7,7 @@ import {
 import { IoIosPersonAdd } from "react-icons/io";
 import { useSendFriendRequestMutation } from "../../../store/api/apiSlice";
 
-const SendFriendRequest = ({ token, username, isFetching }) => {
+const SendFriendRequest = ({ token, username, isFetching, msg }) => {
   const [sendFriendRequest, { data, isLoading, error }] =
     useSendFriendRequestMutation();
   const handleClick = async () => {
@@ -32,11 +32,7 @@ const SendFriendRequest = ({ token, username, isFetching }) => {
           <IoIosPersonAdd></IoIosPersonAdd> Agregar Amigo
         </ActionFriendBtnStyled>
       )}
-      {!error && (
-        <FriendMessageStyled>
-          Psst 👀... Si quieres ver sus posts agregalo como amigo!
-        </FriendMessageStyled>
-      )}
+      {!error && <FriendMessageStyled>{msg}</FriendMessageStyled>}
       {error && (
         <FriendMessageStyled>
           Ha ocurrido un error al enviar la solicitud: {error.data.msg}

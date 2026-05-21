@@ -102,7 +102,7 @@ export const apiSlice = createApi({
             body: requestInfo, //{token,username}
           };
         },
-        invalidatesTags: ["friendStatus"],
+        invalidatesTags: ["friendStatus", "userPosts", "feed", "friendList"],
       }),
       acceptOrRejectFriendRequest: builder.mutation({
         query: (requestInfo) => {

@@ -43,6 +43,7 @@ const Friendships = ({ loggedUser, profileUser }) => {
               token={token}
               username={profileUser}
               isFetching={isFetching}
+              msg="Psst 👀... Si quieres ver sus posts agregalo como amigo!"
             ></SendFriendRequest>
           )}
           {data?.estado === "amigos" && (
@@ -78,15 +79,13 @@ const Friendships = ({ loggedUser, profileUser }) => {
             )}
           {data?.estado === "rechazado" &&
             data?.friendRequest?.recieverUsername === loggedUser && (
-              <>
-                <FriendMessageStyled>
-                  Rechazaste la solicitud de amistad de {profileUser} pero
-                  puedes enviarle una si cambias de opinion 👀...
-                </FriendMessageStyled>
-                <ActionFriendBtnStyled>
-                  <IoIosPersonAdd></IoIosPersonAdd> Agregar Amigo
-                </ActionFriendBtnStyled>
-              </>
+              <SendFriendRequest
+                token={token}
+                username={profileUser}
+                isFetching={isFetching}
+                msg={`Rechazaste la solicitud de amistad de ${profileUser} pero
+                  puedes enviarle una si cambias de opinion 👀...`}
+              ></SendFriendRequest>
             )}
         </>
       )}
