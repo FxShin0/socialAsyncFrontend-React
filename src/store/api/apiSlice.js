@@ -112,7 +112,13 @@ export const apiSlice = createApi({
             body: requestInfo, //{token, username, action}
           };
         },
-        invalidatesTags: ["friendStatus", "userPosts", "feed", "friendList"],
+        invalidatesTags: [
+          "friendStatus",
+          "userPosts",
+          "feed",
+          "friendList",
+          "profileInfo",
+        ],
       }),
       deleteFriend: builder.mutation({
         query: (username) => {
@@ -121,7 +127,13 @@ export const apiSlice = createApi({
             method: "DELETE",
           };
         },
-        invalidatesTags: ["friendStatus", "userPosts", "feed", "friendList"],
+        invalidatesTags: [
+          "friendStatus",
+          "userPosts",
+          "feed",
+          "friendList",
+          "profileInfo",
+        ],
       }),
     };
   },
