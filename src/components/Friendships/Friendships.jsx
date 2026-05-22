@@ -13,19 +13,30 @@ import {
   useGetFriendRequestStatusQuery,
   useSendFriendRequestMutation,
 } from "../../store/api/apiSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SendFriendRequest from "./SendFriendRequest/SendFriendRequest";
 import AcceptOrRejectFriendRequest from "./acceptOrRejectFriendRequest/AcceptOrRejectFriendRequest";
+import DeleteFriend from "./DeleteFriend/DeleteFriend";
+import { setFriendshipStatus } from "../../slices/friendSlice";
 
 const Friendships = ({ loggedUser, profileUser }) => {
   const token = useSelector((state) => {
     return state.auth.token;
   });
+  const dispatch = useDispatch();
   const { data, error, currentData, isFetching, isSuccess, isError, refetch } =
     useGetFriendRequestStatusQuery(profileUser, {
       skip: loggedUser === profileUser,
       pollingInterval: 30000,
     });
+  useEffect(() => {
+    if (!data) return;
+    if (data.estado === "amigos") {
+      dispatch(setFriendshipStatus({ currentStatus: true }));
+    } else {
+      dispatch(setFriendshipStatus({ currentStatus: false }));
+    }
+  }, [data]);
 
   return (
     <FriendSectionContainerStyled>
@@ -47,14 +58,7 @@ const Friendships = ({ loggedUser, profileUser }) => {
             ></SendFriendRequest>
           )}
           {data?.estado === "amigos" && (
-            <>
-              <FriendMessageStyled>
-                {profileUser} y tu son amigos 😄...
-              </FriendMessageStyled>
-              <ActionFriendBtnStyled remove>
-                <IoPersonRemoveSharp></IoPersonRemoveSharp> Eliminar amigo
-              </ActionFriendBtnStyled>
-            </>
+            <DeleteFriend profileUser={profileUser}></DeleteFriend>
           )}
           {data?.estado === "pendiente" &&
             data?.friendRequest?.emitterUsername === loggedUser && (

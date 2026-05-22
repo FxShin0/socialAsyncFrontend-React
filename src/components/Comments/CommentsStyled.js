@@ -48,6 +48,7 @@ export const CommentNameStyled = styled.p`
   opacity: 90%;
   font-size: 1.4rem;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 export const CommentContentSyled = styled.p`

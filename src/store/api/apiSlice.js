@@ -114,6 +114,15 @@ export const apiSlice = createApi({
         },
         invalidatesTags: ["friendStatus", "userPosts", "feed", "friendList"],
       }),
+      deleteFriend: builder.mutation({
+        query: (username) => {
+          return {
+            url: `/friend/${username}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["friendStatus", "userPosts", "feed", "friendList"],
+      }),
     };
   },
 });
@@ -132,4 +141,5 @@ export const {
   useGetFriendRequestStatusQuery,
   useSendFriendRequestMutation,
   useAcceptOrRejectFriendRequestMutation,
+  useDeleteFriendMutation,
 } = apiSlice;

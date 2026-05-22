@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaArrowCircleUp, FaCommentDots } from "react-icons/fa";
 import { FaPenNib } from "react-icons/fa6";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { initialValuesComment } from "../../formik/Comment/initialValues";
 import { validationSchemaComment } from "../../formik/Comment/validationSchema";
 import { getDate } from "../../helpers/getDateString";
@@ -39,6 +40,7 @@ const Comments = ({ postId }) => {
   const token = useSelector((state) => {
     return state.auth.token;
   });
+  const navigate = useNavigate();
   const bottomRef = useRef(null);
   const handleReload = async () => {
     try {
@@ -119,9 +121,19 @@ const Comments = ({ postId }) => {
                   key={comment?._id}
                   isNew={comment?._id === newCommentId}
                 >
-                  <IconStyled>{comment?.username.charAt(0)}</IconStyled>
+                  <IconStyled
+                    onClick={() => {
+                      navigate(`/posts/${comment?.username}`);
+                    }}
+                  >
+                    {comment?.username.charAt(0)}
+                  </IconStyled>
                   <NameAndCommentContainerStyled>
-                    <CommentNameStyled>
+                    <CommentNameStyled
+                      onClick={() => {
+                        navigate(`/posts/${comment?.username}`);
+                      }}
+                    >
                       {comment?.username} |{" "}
                       <DateSpanStyled>
                         {getDate(comment?.createdAt).hourDateString}

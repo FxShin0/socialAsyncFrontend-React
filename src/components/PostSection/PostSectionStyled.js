@@ -49,6 +49,7 @@ export const IconAndNameContainerStyled = styled.div`
   justify-content: left;
   align-items: center;
   gap: 5px;
+  cursor: pointer;
 `;
 
 export const IconStyled = styled.p`
@@ -61,6 +62,7 @@ export const IconStyled = styled.p`
   font-size: 1.5rem;
   text-align: center;
   flex-shrink: 0;
+  cursor: pointer;
 `;
 
 export const NameContainerStyled = styled.p`

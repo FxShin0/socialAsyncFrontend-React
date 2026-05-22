@@ -1,11 +1,13 @@
 import { ErrorMessage, Field, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useDelayedLoading } from "../../customHooks/useDelayedLoading";
 import { initialValuesPost } from "../../formik/Post/initialValues";
 import { validationSchemaPost } from "../../formik/Post/validationSchema";
 import { autoExpandTextArea } from "../../helpers/autoExpandTextArea";
 import { getDate } from "../../helpers/getDateString";
+import { logout, setSessionExpired } from "../../slices/authSlice";
 import {
   apiSlice,
   useCreatePostMutation,
@@ -34,7 +36,6 @@ import {
   SendPostFormContainerStyled,
   TextContainerStyled,
 } from "./PostSectionStyled";
-import { logout, setSessionExpired } from "../../slices/authSlice";
 
 const PostSection = ({
   mode,
@@ -45,9 +46,18 @@ const PostSection = ({
 }) => {
   const [newPostId, setNewPostId] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = useSelector((state) => {
     return state.auth.token;
   });
+  const user = useSelector((state) => {
+    return state.auth.user;
+  });
+  const friendshipStatus = useSelector((state) => {
+    return state.friend.currentFriendshipStatus;
+  });
+  const shouldShowPosts =
+    mode === "feed" || user === postsAuthor || friendshipStatus;
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(1);
   const feedQuery = useGetUserFeedQuery(page, { skip: mode !== "feed" });
@@ -55,8 +65,15 @@ const PostSection = ({
     { user: postsAuthor, page },
     { skip: mode === "feed" },
   );
-  const { data, error, isFetching, isLoading, isSuccess, isError } =
-    mode === "feed" ? feedQuery : userPostsQuery;
+  const {
+    data,
+    error,
+    isFetching,
+    isLoading,
+    isSuccess,
+    isError,
+    currentData,
+  } = mode === "feed" ? feedQuery : userPostsQuery;
   const showColdStart = useDelayedLoading(isFetching, 3000);
   const [
     createPost,
@@ -142,14 +159,19 @@ const PostSection = ({
       )}
       <PostsContainerStyled>
         {!isError &&
-          !isLoading &&
+          currentData &&
+          shouldShowPosts &&
           allPosts?.map((post) => {
             return (
               <PostContainerStyled
                 key={post?._id}
                 isNew={post?._id === newPostId}
               >
-                <IconAndNameContainerStyled>
+                <IconAndNameContainerStyled
+                  onClick={() => {
+                    navigate(`/posts/${post?.username}`);
+                  }}
+                >
                   <IconStyled>{post?.username?.charAt(0)}</IconStyled>
                   <NameContainerStyled>{post?.username}</NameContainerStyled>
                 </IconAndNameContainerStyled>
@@ -161,7 +183,14 @@ const PostSection = ({
               </PostContainerStyled>
             );
           })}
-        {isLoading && page === 1 && (
+        {isFetching && !currentData && page === 1 && (
+          <FeedLoadingIcon
+            stroke="#98ff98"
+            strokeOpacity={0.125}
+            speed={0.75}
+          ></FeedLoadingIcon>
+        )}
+        {isFetching && !shouldShowPosts && currentData && (
           <FeedLoadingIcon
             stroke="#98ff98"
             strokeOpacity={0.125}
