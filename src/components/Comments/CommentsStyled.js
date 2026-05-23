@@ -119,6 +119,13 @@ export const CommentLoadingIconStyled = styled(LoadingIcons.Puff)`
   height: 100px;
 `;
 
+export const ManualCommentLoadingIconStyled = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
+  width: 30px;
+  height: 30px;
+`;
+
 export const CommentAndSendContainer = styled.div`
   display: flex;
   justify-content: center;

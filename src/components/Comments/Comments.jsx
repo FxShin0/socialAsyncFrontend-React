@@ -30,6 +30,7 @@ import {
   CommentSendContainerStyled,
   CommentSendIconStyled,
   DateSpanStyled,
+  ManualCommentLoadingIconStyled,
   NameAndCommentContainerStyled,
   NoCommentsMsgStyled,
   SendCommentButton,
@@ -51,6 +52,7 @@ const Comments = ({ postId }) => {
     useGetCommentsQuery(postId, {
       skip: !showComments,
       pollingInterval: 8000,
+      refetchOnMountOrArgChange: true,
     });
   const [
     postComment,
@@ -83,7 +85,6 @@ const Comments = ({ postId }) => {
   useEffect(() => {
     if (!showComments) {
       setNewCommentIds(new Set());
-      setPreviousCommentIds(new Set());
     }
   }, [showComments]);
   useEffect(() => {
