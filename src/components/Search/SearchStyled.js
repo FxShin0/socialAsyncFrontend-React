@@ -19,13 +19,35 @@ export const SearchResultsContainerStyled = styled.div`
   display: ${({ shouldShowResults }) => {
     return shouldShowResults ? "flex" : "none";
   }};
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
   flex-direction: column;
-  gap: 5px;
   border: solid 1px white;
   border-top: none;
   background-color: #010112;
+  max-height: 300px;
+  overflow-y: auto;
+  top: 100%;
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+
+  /* Chrome / Edge / Safari */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(255, 255, 255);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(255, 255, 255);
+  }
 `;
 
 export const ResultCardStyled = styled.div`

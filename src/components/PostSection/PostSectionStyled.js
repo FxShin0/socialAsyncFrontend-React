@@ -73,8 +73,7 @@ export const NameContainerStyled = styled.p`
 `;
 
 export const DateContainerStyled = styled.p`
-  color: white;
-  opacity: 40%;
+  color: gray;
   font-size: 1.2rem;
 `;
 

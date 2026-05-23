@@ -19,6 +19,7 @@ const Search = () => {
   const [searchInput, setSearchInput] = useState("");
   const [shouldFetch, setShouldFetch] = useState(false);
   const [shouldShowResults, setShouldShowResults] = useState(false);
+  const searchRef = useRef();
   const navigate = useNavigate();
   const { data, error, isFetching, isSuccess, isError, refetch } =
     useSearchUserQuery(searchInput, {
@@ -28,17 +29,27 @@ const Search = () => {
   useEffect(() => {
     setShouldFetch(false);
   }, [data]);
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setSearchInput("");
+        setShouldFetch(false);
+        setShouldShowResults(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
-    <SearchContainerStyled>
+    <SearchContainerStyled ref={searchRef}>
       <SearchFriendsInputStyled
         placeholder="Buscar personas..."
         type="text"
         value={searchInput}
-        onBlur={() => {
-          setSearchInput("");
-          setShouldFetch(false);
-          setShouldShowResults(false);
-        }}
         onFocus={() => {
           setShouldShowResults(true);
         }}
