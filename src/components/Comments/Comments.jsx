@@ -32,9 +32,9 @@ import {
   DateSpanStyled,
   NameAndCommentContainerStyled,
   NoCommentsMsgStyled,
-  ReloadCommentsIconStyled,
   SendCommentButton,
 } from "./CommentsStyled";
+import { motion } from "framer-motion";
 
 const Comments = ({ postId }) => {
   const token = useSelector((state) => {
@@ -42,28 +42,21 @@ const Comments = ({ postId }) => {
   });
   const navigate = useNavigate();
   const bottomRef = useRef(null);
-  const handleReload = async () => {
-    try {
-      const result = await refetch().unwrap();
-      requestAnimationFrame(() => {
-        bottomRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
-      });
-      setAllComments(result.comments);
-    } catch (err) {}
-  };
+  const [previousCommentIds, setPreviousCommentIds] = useState(new Set());
+  const [pendingCommentId, setPendingCommentId] = useState(null);
+  const [newCommentIds, setNewCommentIds] = useState(new Set());
   const [allComments, setAllComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
-  const { data, error, isFetching, isSuccess, isError, refetch } =
+  const { data, error, isFetching, isSuccess, currentData, isError, refetch } =
     useGetCommentsQuery(postId, {
       skip: !showComments,
+      pollingInterval: 8000,
     });
   const [
     postComment,
     { data: dataComment, isLoading: isLoadingComment, error: errorComment },
   ] = usePostCommentMutation();
-  const [newCommentId, setNewCommentId] = useState(null);
+  const shouldShowCommentLoader = isLoadingComment || pendingCommentId;
   const handleSubmit = async (values, { resetForm }) => {
     try {
       const result = await postComment({
@@ -71,29 +64,53 @@ const Comments = ({ postId }) => {
         content: values.comment,
         postId,
       }).unwrap();
-      setNewCommentId(result.comment._id);
-      setAllComments((prev) => {
-        return [...prev, result.comment];
-      });
+      setPendingCommentId(result.comment._id);
       resetForm();
     } catch (err) {}
   };
   useEffect(() => {
-    if (!data) return;
-    setAllComments((prev) => {
-      return [...data.comments];
+    if (!data || !pendingCommentId) return;
+
+    const exists = data.comments.some((comment) => {
+      return comment._id === pendingCommentId;
     });
-  }, [data]);
+
+    if (exists) {
+      setPendingCommentId(null);
+    }
+  }, [data, pendingCommentId]);
 
   useEffect(() => {
-    if (!newCommentId) return;
+    if (!showComments) {
+      setNewCommentIds(new Set());
+      setPreviousCommentIds(new Set());
+    }
+  }, [showComments]);
+  useEffect(() => {
+    if (!data) return;
 
-    const t = setTimeout(() => {
-      setNewCommentId(null);
-    }, 1500);
+    if (previousCommentIds.size != 0) {
+      setNewCommentIds(
+        new Set(
+          data?.comments
+            ?.map((comment) => {
+              return comment._id;
+            })
+            .filter((id) => {
+              return !previousCommentIds?.has(id);
+            }),
+        ),
+      );
+    }
 
-    return () => clearTimeout(t);
-  }, [data, newCommentId]);
+    setPreviousCommentIds(
+      new Set(
+        data?.comments?.map((comment) => {
+          return comment._id;
+        }),
+      ),
+    );
+  }, [data]);
 
   return (
     <>
@@ -113,13 +130,12 @@ const Comments = ({ postId }) => {
       </ActionsContainerStyled>
       {showComments && (
         <CommentSectionStyled>
-          {!isFetching &&
-            allComments?.map((comment) => {
-              console.log(allComments);
+          {currentData &&
+            data?.comments?.map((comment) => {
               return (
                 <CommentContainerStyled
                   key={comment?._id}
-                  isNew={comment?._id === newCommentId}
+                  isNew={newCommentIds?.has(comment?._id)}
                 >
                   <IconStyled
                     onClick={() => {
@@ -153,14 +169,14 @@ const Comments = ({ postId }) => {
               <FaPenNib></FaPenNib>
             </NoCommentsMsgStyled>
           )}
-          {isFetching && (
+          {isFetching && !currentData && (
             <CommentLoadingIconStyled
               stroke="#98ff98"
               strokeOpacity={0.125}
               speed={0.75}
             ></CommentLoadingIconStyled>
           )}
-          {isLoadingComment && (
+          {shouldShowCommentLoader && (
             <CommentLoadingIconStyled
               stroke="#98ff98"
               strokeOpacity={0.125}
@@ -180,9 +196,6 @@ const Comments = ({ postId }) => {
             >
               <CommentFormStyled>
                 <CommentAndSendContainer>
-                  <ReloadCommentsIconStyled
-                    onClick={handleReload}
-                  ></ReloadCommentsIconStyled>
                   <Field
                     placeholder="Escribe un comentario.."
                     as={CommentInputStyled}

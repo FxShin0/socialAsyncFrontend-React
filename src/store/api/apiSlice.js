@@ -50,6 +50,7 @@ export const apiSlice = createApi({
         query: (postId) => {
           return `/comment/${postId}`;
         },
+        providesTags: ["comments"],
       }),
       postComment: builder.mutation({
         query: (commentInfo) => {
@@ -59,7 +60,7 @@ export const apiSlice = createApi({
             body: commentInfo, //{token, content, postId}
           };
         },
-        invalidatesTags: ["profileInfo"],
+        invalidatesTags: ["profileInfo", "comments"],
       }),
       createPost: builder.mutation({
         query: (postInfo) => {

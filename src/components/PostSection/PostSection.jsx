@@ -167,13 +167,21 @@ const PostSection = ({
                 key={post?._id}
                 isNew={post?._id === newPostId}
               >
-                <IconAndNameContainerStyled
-                  onClick={() => {
-                    navigate(`/posts/${post?.username}`);
-                  }}
-                >
-                  <IconStyled>{post?.username?.charAt(0)}</IconStyled>
-                  <NameContainerStyled>{post?.username}</NameContainerStyled>
+                <IconAndNameContainerStyled>
+                  <IconStyled
+                    onClick={() => {
+                      navigate(`/posts/${post?.username}`);
+                    }}
+                  >
+                    {post?.username?.charAt(0)}
+                  </IconStyled>
+                  <NameContainerStyled
+                    onClick={() => {
+                      navigate(`/posts/${post?.username}`);
+                    }}
+                  >
+                    {post?.username}
+                  </NameContainerStyled>
                 </IconAndNameContainerStyled>
                 <DateContainerStyled>
                   {getDate(post?.createdAt).hourDateString}

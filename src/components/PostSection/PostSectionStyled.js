@@ -46,10 +46,9 @@ export const PostContainerStyled = styled.div`
 export const IconAndNameContainerStyled = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: center;
   gap: 5px;
-  cursor: pointer;
 `;
 
 export const IconStyled = styled.p`
@@ -70,6 +69,7 @@ export const NameContainerStyled = styled.p`
   opacity: 60%;
   font-size: 1.4rem;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 export const DateContainerStyled = styled.p`

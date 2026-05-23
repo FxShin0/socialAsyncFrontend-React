@@ -3,6 +3,18 @@ import { IoReload, IoSend } from "react-icons/io5";
 import LoadingIcons from "react-loading-icons";
 import styled, { css, keyframes } from "styled-components";
 
+export const glow = keyframes`
+  0% {
+    box-shadow: 0 0 0px rgba(255,255,255,0);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(255,255,255,0.8);
+  }
+  100% {
+    box-shadow: 0 0 0px rgba(255,255,255,0);
+  }
+`;
+
 export const CommentSectionStyled = styled.div`
   display: flex;
   justify-content: center;
@@ -127,18 +139,6 @@ export const SendCommentButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-export const glow = keyframes`
-  0% {
-    box-shadow: 0 0 0px rgba(255,255,255,0);
-  }
-  50% {
-    box-shadow: 0 0 12px rgba(255,255,255,0.8);
-  }
-  100% {
-    box-shadow: 0 0 0px rgba(255,255,255,0);
-  }
 `;
 
 export const BottomRef = styled.div`
