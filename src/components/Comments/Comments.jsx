@@ -30,12 +30,10 @@ import {
   CommentSendContainerStyled,
   CommentSendIconStyled,
   DateSpanStyled,
-  ManualCommentLoadingIconStyled,
   NameAndCommentContainerStyled,
   NoCommentsMsgStyled,
   SendCommentButton,
 } from "./CommentsStyled";
-import { motion } from "framer-motion";
 
 const Comments = ({ postId }) => {
   const token = useSelector((state) => {
@@ -43,17 +41,27 @@ const Comments = ({ postId }) => {
   });
   const navigate = useNavigate();
   const bottomRef = useRef(null);
+  const hasOpenedOnceRef = useRef(false);
   const [previousCommentIds, setPreviousCommentIds] = useState(new Set());
   const [pendingCommentId, setPendingCommentId] = useState(null);
   const [newCommentIds, setNewCommentIds] = useState(new Set());
   const [allComments, setAllComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
-  const { data, error, isFetching, isSuccess, currentData, isError, refetch } =
-    useGetCommentsQuery(postId, {
-      skip: !showComments,
-      pollingInterval: 8000,
-      refetchOnMountOrArgChange: true,
-    });
+  const {
+    data,
+    error,
+    isFetching,
+    isLoading,
+    isSuccess,
+    currentData,
+    isError,
+    refetch,
+  } = useGetCommentsQuery(postId, {
+    skip: !showComments,
+    pollingInterval: 8000,
+    refetchOnMountOrArgChange: true,
+  });
+
   const [
     postComment,
     { data: dataComment, isLoading: isLoadingComment, error: errorComment },
@@ -90,7 +98,7 @@ const Comments = ({ postId }) => {
   useEffect(() => {
     if (!data) return;
 
-    if (previousCommentIds.size != 0) {
+    if (previousCommentIds.size != 0 || hasOpenedOnceRef.current) {
       setNewCommentIds(
         new Set(
           data?.comments
@@ -111,6 +119,8 @@ const Comments = ({ postId }) => {
         }),
       ),
     );
+
+    hasOpenedOnceRef.current = true;
   }, [data]);
 
   return (
@@ -164,7 +174,7 @@ const Comments = ({ postId }) => {
               );
             })}
           <BottomRef ref={bottomRef} />
-          {!isFetching && data?.comments?.length === 0 && (
+          {!isLoading && data?.comments?.length === 0 && (
             <NoCommentsMsgStyled>
               No hay comentarios en este post. Podrias ser el primero...
               <FaPenNib></FaPenNib>

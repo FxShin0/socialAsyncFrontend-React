@@ -15,6 +15,21 @@ export const glow = keyframes`
   }
 `;
 
+export const softBounceIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.01);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }`;
+
 export const CommentSectionStyled = styled.div`
   display: flex;
   justify-content: center;
@@ -110,6 +125,7 @@ export const CommentInputStyled = styled.input`
 export const NoCommentsMsgStyled = styled.p`
   font-size: 1.2rem;
   color: #ffffffb3;
+  animation: ${softBounceIn} 1.2s ease;
 `;
 
 export const CommentLoadingIconStyled = styled(LoadingIcons.Puff)`
@@ -117,13 +133,6 @@ export const CommentLoadingIconStyled = styled(LoadingIcons.Puff)`
   justify-self: center;
   width: 100px;
   height: 100px;
-`;
-
-export const ManualCommentLoadingIconStyled = styled(LoadingIcons.Puff)`
-  align-self: center;
-  justify-self: center;
-  width: 30px;
-  height: 30px;
 `;
 
 export const CommentAndSendContainer = styled.div`
