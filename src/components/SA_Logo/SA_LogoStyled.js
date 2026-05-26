@@ -26,4 +26,19 @@ export const LogoContainerStyled = styled.span`
   cursor: ${({ shouldpoint }) => {
     return shouldpoint ? "pointer" : "default";
   }};
+  @media (max-width: 887px) {
+    display: none;
+  }
+`;
+
+export const LogoContainerPhoneStyled = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  user-select: none;
+  font-weight: 800;
+  @media (min-width: 887px) {
+    display: none;
+  }
 `;

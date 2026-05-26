@@ -8,10 +8,14 @@ export const RL_NavbarStyled = styled.nav`
   align-items: center;
   gap: 10px;
   background-color: #00010d;
+  z-index: 999;
   border-bottom: solid 3px white;
   padding: 0px 20px;
   position: fixed;
   top: 0px;
+  @media (max-width: 900px) {
+    height: 5vh;
+  }
 `;
 
 export const RL_ContainerStyled = styled.div`

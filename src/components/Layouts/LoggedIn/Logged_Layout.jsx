@@ -14,6 +14,8 @@ import {
   NavLogoutIconStyled,
   NavHomeIconStyled,
   NavButtonNameStyled,
+  LoggedNavbarPhoneStyled,
+  NavFriendIconStyled,
 } from "./Logged_LayoutStyled";
 import Search from "../../Search/Search";
 import { apiSlice } from "../../../store/api/apiSlice";
@@ -63,6 +65,25 @@ const Logged_Layout = () => {
         </NavProfileAndLogoutContainerStyled>
       </LoggedNavbarStyled>
       <LayoutContainerStyled>
+        <LoggedNavbarPhoneStyled>
+          <NavHomeIconStyled
+            onClick={() => {
+              navigate("/feed");
+            }}
+          ></NavHomeIconStyled>
+          <NavUserIconStyled
+            onClick={() => {
+              navigate(`/posts/${username}`);
+            }}
+          ></NavUserIconStyled>
+          <NavLogoutIconStyled
+            onClick={() => {
+              dispatch(logout());
+              dispatch(apiSlice.util.resetApiState());
+            }}
+          ></NavLogoutIconStyled>
+          <NavFriendIconStyled></NavFriendIconStyled>
+        </LoggedNavbarPhoneStyled>
         <MainContainerStyled>
           <Outlet></Outlet>
         </MainContainerStyled>

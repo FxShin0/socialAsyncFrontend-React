@@ -5,12 +5,17 @@ export const SearchContainerStyled = styled.div`
   position: relative;
   width: 30%;
   height: 60%;
+  @media (max-width: 887px) {
+    width: 70%;
+  }
+  z-index: 999;
 `;
 export const SearchFriendsInputStyled = styled.input`
   width: 100%;
   height: 100%;
   padding: 5px 10px;
   border: solid 1px white;
+  z-index: 999;
 `;
 
 export const SearchResultsContainerStyled = styled.div`
@@ -19,12 +24,14 @@ export const SearchResultsContainerStyled = styled.div`
   display: ${({ shouldShowResults }) => {
     return shouldShowResults ? "flex" : "none";
   }};
+  z-index: 999;
   justify-content: flex-start;
   flex-direction: column;
   border: solid 1px white;
   border-top: none;
   background-color: #010112;
   max-height: 300px;
+
   overflow-y: auto;
   top: 100%;
   /* Firefox */
@@ -47,6 +54,9 @@ export const SearchResultsContainerStyled = styled.div`
 
   &::-webkit-scrollbar-thumb:hover {
     background: rgb(255, 255, 255);
+  }
+  @media (max-width: 887px) {
+    max-height: 700px;
   }
 `;
 

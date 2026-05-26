@@ -9,11 +9,10 @@ export const GlobalStyles = createGlobalStyle`
   list-style: none;
   text-decoration: none;
   font-family: "Poppins", sans-serif;
-
   /* border: solid 1px red; */
 }
 body{
-    background-color: #00010f
+    background-color: #00010f;
 }
 
 `;

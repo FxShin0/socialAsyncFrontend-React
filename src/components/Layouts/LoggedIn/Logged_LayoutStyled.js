@@ -3,14 +3,40 @@ import { RL_NavbarStyled } from "../RegisterLogin/RL_LayoutStyled";
 import { FaUserCircle } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
 import { FaHome } from "react-icons/fa";
+import { FaUserFriends } from "react-icons/fa";
 
 export const LoggedNavbarStyled = styled(RL_NavbarStyled)``;
+
+export const LoggedNavbarPhoneStyled = styled.nav`
+  display: flex;
+  background-color: #00010d;
+  height: 95vh;
+  width: 50px;
+  margin-top: 5vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  padding: 20px 0px;
+  border: solid 1px white;
+  border-bottom: none;
+  border-left: none;
+  @media (min-width: 887px) {
+    display: none;
+  }
+`;
 
 export const NavProfileAndLogoutContainerStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
+  @media (max-width: 887px) {
+    display: none;
+  }
 `;
 
 export const NavButtonNameStyled = styled.p`
@@ -23,16 +49,66 @@ export const NavButtonNameStyled = styled.p`
 export const NavUserIconStyled = styled(FaUserCircle)`
   color: white;
   font-size: 1.3rem;
+  @media (max-width: 887px) {
+    font-size: 2.2rem;
+    transition:
+      transform 0.12s ease,
+      background-color 0.12s ease;
+
+    &:active {
+      transform: scale(0.92);
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+    -webkit-tap-highlight-color: transparent;
+  }
 `;
 
 export const NavLogoutIconStyled = styled(TbLogout2)`
   color: white;
   font-size: 1.3rem;
+  @media (max-width: 887px) {
+    font-size: 2.2rem;
+    transition:
+      transform 0.12s ease,
+      background-color 0.12s ease;
+
+    &:active {
+      transform: scale(0.92);
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+    -webkit-tap-highlight-color: transparent;
+  }
+`;
+
+export const NavFriendIconStyled = styled(FaUserFriends)`
+  color: gray;
+  font-size: 2.2rem;
+  transition:
+    transform 0.12s ease,
+    background-color 0.12s ease;
+
+  &:active {
+    transform: scale(0.92);
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+  -webkit-tap-highlight-color: transparent;
 `;
 
 export const NavHomeIconStyled = styled(FaHome)`
   color: white;
   font-size: 1.3rem;
+  @media (max-width: 887px) {
+    font-size: 2.2rem;
+    transition:
+      transform 0.12s ease,
+      background-color 0.12s ease;
+
+    &:active {
+      transform: scale(0.92);
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+    -webkit-tap-highlight-color: transparent;
+  }
 `;
 
 export const NavButtonContainerStyled = styled.div`
@@ -67,10 +143,15 @@ export const LogoutIconStyled = styled(TbLogout2)`
 export const LayoutContainerStyled = styled.div`
   display: flex;
   justify-content: center;
-  align-items: top;
+  align-items: flex-start;
   height: 93vh;
   width: 100%;
   margin-top: 7vh;
+  z-index: 0;
+  @media (max-width: 900px) {
+    margin-top: 5vh;
+    height: 95vh;
+  }
 `;
 
 export const MainContainerStyled = styled.div`
@@ -101,6 +182,17 @@ export const MainContainerStyled = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background: rgb(255, 255, 255);
   }
+  @media (max-width: 1450px) {
+    width: 60%;
+  }
+  @media (max-width: 900px) {
+    min-height: 95vh;
+  }
+  @media (max-width: 887px) {
+    width: 80%;
+    margin-left: 50px;
+    border: solid 1px white;
+  }
 `;
 export const FriendSectionStyled = styled.div`
   width: 15%;
@@ -127,5 +219,16 @@ export const FriendSectionStyled = styled.div`
 
   &::-webkit-scrollbar-thumb:hover {
     background: rgb(255, 255, 255);
+  }
+
+  @media (max-width: 1450px) {
+    width: 20%;
+  }
+  @media (max-width: 900px) {
+    min-height: 95vh;
+  }
+
+  @media (max-width: 887px) {
+    display: none;
   }
 `;
