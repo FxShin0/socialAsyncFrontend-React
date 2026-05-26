@@ -9,6 +9,7 @@ export const ProfileStyled = styled.div`
   margin-bottom: 10px;
   flex-direction: column;
   gap: 5px;
+  padding: 5px 10px;
 `;
 
 export const UsernameStyled = styled.p`
@@ -28,6 +29,9 @@ export const NameStyled = styled.p`
 export const StatsContainerStyled = styled.div`
   display: flex;
   gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const StatTextStyled = styled.p`
