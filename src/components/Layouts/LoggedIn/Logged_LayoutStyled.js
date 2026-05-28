@@ -16,7 +16,7 @@ export const LoggedNavbarStyled = styled(RL_NavbarStyled)`
 export const LoggedNavbarPhoneStyled = styled.nav`
   display: flex;
   background-color: #00010d;
-  height: 4vh;
+  height: 4dvh;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -159,19 +159,19 @@ export const LayoutContainerStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  height: 93vh;
+  height: 93dvh;
   width: 100%;
-  margin-top: 7vh;
+  margin-top: 7dvh;
   z-index: 0;
   @media (max-width: 900px) {
-    margin-top: 5vh;
-    height: 95vh;
+    margin-top: 5dvh;
+    height: 95dvh;
   }
 `;
 
 export const MainContainerStyled = styled.div`
   width: 70%;
-  height: 93vh;
+  height: 93dvh;
   border: solid 3px white;
   overflow-y: auto;
   max-width: 1600px;
@@ -201,20 +201,19 @@ export const MainContainerStyled = styled.div`
     width: 60%;
   }
   @media (max-width: 900px) {
-    height: 95vh;
+    height: 95dvh;
   }
   @media (max-width: 887px) {
     width: 90%;
     border: solid 1px white;
-    height: 91vh;
+    height: 91dvh;
     padding-bottom: 17px;
   }
 `;
 export const FriendSectionStyled = styled.div`
   width: 15%;
   border: solid 3px white;
-  height: 93vh;
-  max-height: 93vh;
+  height: 93dvh;
   overflow-y: auto;
   max-width: 600px;
 
@@ -242,8 +241,7 @@ export const FriendSectionStyled = styled.div`
     width: 20%;
   }
   @media (max-width: 900px) {
-    height: 95vh;
-    max-height: 95vh;
+    height: 95dvh;
   }
 
   @media (max-width: 887px) {
