@@ -147,6 +147,7 @@ export const CommentFormStyled = styled(Form)`
   flex-direction: column;
   gap: 5px;
   width: 100%;
+  scroll-margin-bottom: 100px;
 `;
 
 export const SendCommentButton = styled.button`

@@ -16,8 +16,9 @@ import {
   NavButtonNameStyled,
   LoggedNavbarPhoneStyled,
   NavFriendIconStyled,
+  SearchIconStyled,
 } from "./Logged_LayoutStyled";
-import Search from "../../Search/Search";
+import SearchDesktop from "../../Search/SearchDesktop/SearchDesktop";
 import { apiSlice } from "../../../store/api/apiSlice";
 
 const Logged_Layout = () => {
@@ -35,7 +36,7 @@ const Logged_Layout = () => {
           }}
           shouldpoint="true"
         ></SA_Logo>
-        <Search></Search>
+        <SearchDesktop></SearchDesktop>
         <NavProfileAndLogoutContainerStyled>
           <NavButtonContainerStyled
             onClick={() => {
@@ -66,23 +67,32 @@ const Logged_Layout = () => {
       </LoggedNavbarStyled>
       <LayoutContainerStyled>
         <LoggedNavbarPhoneStyled>
-          <NavHomeIconStyled
+          <SearchIconStyled
             onClick={() => {
-              navigate("/feed");
+              navigate(`/search`);
             }}
-          ></NavHomeIconStyled>
+          ></SearchIconStyled>
           <NavUserIconStyled
             onClick={() => {
               navigate(`/posts/${username}`);
             }}
           ></NavUserIconStyled>
+          <NavHomeIconStyled
+            onClick={() => {
+              navigate("/feed");
+            }}
+          ></NavHomeIconStyled>
+          <NavFriendIconStyled
+            onClick={() => {
+              navigate("/friends");
+            }}
+          ></NavFriendIconStyled>
           <NavLogoutIconStyled
             onClick={() => {
               dispatch(logout());
               dispatch(apiSlice.util.resetApiState());
             }}
           ></NavLogoutIconStyled>
-          <NavFriendIconStyled></NavFriendIconStyled>
         </LoggedNavbarPhoneStyled>
         <MainContainerStyled>
           <Outlet></Outlet>

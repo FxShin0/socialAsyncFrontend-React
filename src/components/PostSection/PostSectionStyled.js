@@ -65,8 +65,7 @@ export const IconStyled = styled.p`
 `;
 
 export const NameContainerStyled = styled.p`
-  color: white;
-  opacity: 60%;
+  color: gray;
   font-size: 1.4rem;
   font-weight: 600;
   cursor: pointer;
@@ -115,6 +114,7 @@ export const PostsErrorMsgStyled = styled.p`
   font-weight: 300;
   font-size: 1.6rem;
   color: white;
+  text-align: center;
 `;
 
 export const EndOfFeedIconStyled = styled(GiFinishLine)`

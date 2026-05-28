@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { RL_LoadingIconStyled } from "../RL_Shared/RL_Styled";
+import { RL_LoadingIconStyled } from "../../RL_Shared/RL_Styled";
 
 export const SearchContainerStyled = styled.div`
   position: relative;
   width: 30%;
   height: 60%;
   @media (max-width: 887px) {
-    width: 70%;
+    display: none;
   }
   z-index: 999;
 `;
@@ -67,7 +67,6 @@ export const ResultCardStyled = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
-  border: solid 1px white;
   background-color: #010112;
   padding: 5px 10px;
   &:hover {
@@ -117,6 +116,7 @@ export const NoResultsMsgStyled = styled.p`
   font-weight: 200;
   color: white;
   padding: 5px;
+  text-align: center;
 `;
 
 export const ErrorMsgStyled = styled(NoResultsMsgStyled)``;

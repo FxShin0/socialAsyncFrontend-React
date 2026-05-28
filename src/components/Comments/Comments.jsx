@@ -123,6 +123,17 @@ const Comments = ({ postId }) => {
     hasOpenedOnceRef.current = true;
   }, [data]);
 
+  useEffect(() => {
+    if (!showComments) return;
+
+    requestAnimationFrame(() => {
+      bottomRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    });
+  }, [showComments]);
+
   return (
     <>
       <ActionsContainerStyled>
@@ -173,7 +184,6 @@ const Comments = ({ postId }) => {
                 </CommentContainerStyled>
               );
             })}
-          <BottomRef ref={bottomRef} />
           {!isLoading && data?.comments?.length === 0 && (
             <NoCommentsMsgStyled>
               No hay comentarios en este post. Podrias ser el primero...
@@ -205,7 +215,7 @@ const Comments = ({ postId }) => {
               validateOnBlur={false}
               validateOnChange={false}
             >
-              <CommentFormStyled>
+              <CommentFormStyled ref={bottomRef}>
                 <CommentAndSendContainer>
                   <Field
                     placeholder="Escribe un comentario.."

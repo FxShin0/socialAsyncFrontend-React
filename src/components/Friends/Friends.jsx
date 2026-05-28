@@ -64,6 +64,7 @@ const Friends = () => {
             </FriendCardStyled>
           );
         })}
+
       {isFetching && !currentData && (
         <RL_LoadingIconStyled
           stroke="#98ff98"

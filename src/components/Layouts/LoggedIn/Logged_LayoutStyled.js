@@ -4,26 +4,27 @@ import { FaUserCircle } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
 import { FaHome } from "react-icons/fa";
 import { FaUserFriends } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
-export const LoggedNavbarStyled = styled(RL_NavbarStyled)``;
+export const LoggedNavbarStyled = styled(RL_NavbarStyled)`
+  @media (max-width: 887px) {
+    justify-content: center;
+    align-items: center;
+  }
+`;
 
 export const LoggedNavbarPhoneStyled = styled.nav`
   display: flex;
   background-color: #00010d;
-  height: 95vh;
-  width: 50px;
-  margin-top: 5vh;
-  flex-direction: column;
+  height: 4vh;
+  width: 100%;
   justify-content: center;
   align-items: center;
   gap: 40px;
   position: fixed;
-  left: 0px;
-  top: 0px;
+  bottom: 0px;
   padding: 20px 0px;
-  border: solid 1px white;
-  border-bottom: none;
-  border-left: none;
+  border-top: solid 1px white;
   @media (min-width: 887px) {
     display: none;
   }
@@ -81,7 +82,7 @@ export const NavLogoutIconStyled = styled(TbLogout2)`
 `;
 
 export const NavFriendIconStyled = styled(FaUserFriends)`
-  color: gray;
+  color: white;
   font-size: 2.2rem;
   transition:
     transform 0.12s ease,
@@ -109,6 +110,20 @@ export const NavHomeIconStyled = styled(FaHome)`
     }
     -webkit-tap-highlight-color: transparent;
   }
+`;
+
+export const SearchIconStyled = styled(FaSearch)`
+  color: white;
+  font-size: 2.2rem;
+  transition:
+    transform 0.12s ease,
+    background-color 0.12s ease;
+
+  &:active {
+    transform: scale(0.92);
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+  -webkit-tap-highlight-color: transparent;
 `;
 
 export const NavButtonContainerStyled = styled.div`
@@ -156,7 +171,7 @@ export const LayoutContainerStyled = styled.div`
 
 export const MainContainerStyled = styled.div`
   width: 70%;
-  min-height: 93vh;
+  height: 93vh;
   border: solid 3px white;
   overflow-y: auto;
   max-width: 1600px;
@@ -186,18 +201,20 @@ export const MainContainerStyled = styled.div`
     width: 60%;
   }
   @media (max-width: 900px) {
-    min-height: 95vh;
+    height: 95vh;
   }
   @media (max-width: 887px) {
-    width: 80%;
-    margin-left: 50px;
+    width: 90%;
     border: solid 1px white;
+    height: 91vh;
+    padding-bottom: 17px;
   }
 `;
 export const FriendSectionStyled = styled.div`
   width: 15%;
   border: solid 3px white;
-  min-height: 93vh;
+  height: 93vh;
+  max-height: 93vh;
   overflow-y: auto;
   max-width: 600px;
 
@@ -225,7 +242,8 @@ export const FriendSectionStyled = styled.div`
     width: 20%;
   }
   @media (max-width: 900px) {
-    min-height: 95vh;
+    height: 95vh;
+    max-height: 95vh;
   }
 
   @media (max-width: 887px) {
