@@ -15,7 +15,7 @@ import UnloggedProtected from "../components/protectedRoutes/Unlogged/UnloggedPr
 import Register from "../components/Register/Register";
 import SessionExpired from "../components/SessionExpired/SessionExpired";
 import SearchMobile from "../components/Search/SearchMobile/SearchMobile";
-import Friends from "../components/Friends/Friends";
+import FriendsGeneral from "../components/Friends/FriendsGeneral";
 
 const Routes = () => {
   return (
@@ -47,7 +47,10 @@ const Routes = () => {
               path="/search"
               element={<SearchMobile></SearchMobile>}
             ></Route>
-            <Route path="/friends" element={<Friends></Friends>}></Route>
+            <Route
+              path="/friends"
+              element={<FriendsGeneral></FriendsGeneral>}
+            ></Route>
           </Route>
         </Route>
         <Route path="*" element={<NotFound></NotFound>}></Route>

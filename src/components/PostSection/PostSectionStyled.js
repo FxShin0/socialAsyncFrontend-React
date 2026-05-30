@@ -29,7 +29,6 @@ export const PostsContainerStyled = styled.div`
 
 export const PostContainerStyled = styled.div`
   width: 100%;
-  border: solid 1px white;
   display: flex;
   justify-content: center;
   align-items: left;

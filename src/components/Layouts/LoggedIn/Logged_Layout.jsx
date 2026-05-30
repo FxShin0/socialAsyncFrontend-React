@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { logout } from "../../../slices/authSlice";
-import Friends from "../../Friends/Friends";
+import FriendsGeneral from "../../Friends/FriendsGeneral";
 import SA_Logo from "../../SA_Logo/SA_Logo";
 import {
   FriendSectionStyled,
@@ -17,15 +17,25 @@ import {
   LoggedNavbarPhoneStyled,
   NavFriendIconStyled,
   SearchIconStyled,
+  NavFriendIconWrapper,
 } from "./Logged_LayoutStyled";
 import SearchDesktop from "../../Search/SearchDesktop/SearchDesktop";
-import { apiSlice } from "../../../store/api/apiSlice";
+import {
+  apiSlice,
+  useGetFriendRequestsQuery,
+} from "../../../store/api/apiSlice";
+import { useIsDesktop } from "../../../customHooks/useIsDesktop";
+import { PendingCounterStyled } from "../../Friends/FriendsStyled";
 
 const Logged_Layout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const username = useSelector((state) => {
     return state.auth.user;
+  });
+  const isDesktop = useIsDesktop();
+  const { data } = useGetFriendRequestsQuery(undefined, {
+    pollingInterval: 10000, //to give that real-time feeling but it should be higher if the app scaled
   });
   return (
     <>
@@ -82,11 +92,16 @@ const Logged_Layout = () => {
               navigate("/feed");
             }}
           ></NavHomeIconStyled>
-          <NavFriendIconStyled
-            onClick={() => {
-              navigate("/friends");
-            }}
-          ></NavFriendIconStyled>
+          <NavFriendIconWrapper>
+            <PendingCounterStyled>
+              {data?.friendRequests?.length}
+            </PendingCounterStyled>
+            <NavFriendIconStyled
+              onClick={() => {
+                navigate("/friends");
+              }}
+            ></NavFriendIconStyled>
+          </NavFriendIconWrapper>
           <NavLogoutIconStyled
             onClick={() => {
               dispatch(logout());
@@ -97,9 +112,11 @@ const Logged_Layout = () => {
         <MainContainerStyled>
           <Outlet></Outlet>
         </MainContainerStyled>
-        <FriendSectionStyled>
-          <Friends></Friends>
-        </FriendSectionStyled>
+        {isDesktop && (
+          <FriendSectionStyled>
+            <FriendsGeneral></FriendsGeneral>
+          </FriendSectionStyled>
+        )}
       </LayoutContainerStyled>
     </>
   );

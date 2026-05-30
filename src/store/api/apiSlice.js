@@ -119,6 +119,7 @@ export const apiSlice = createApi({
           "feed",
           "friendList",
           "profileInfo",
+          "pending",
         ],
       }),
       deleteFriend: builder.mutation({
@@ -135,6 +136,12 @@ export const apiSlice = createApi({
           "friendList",
           "profileInfo",
         ],
+      }),
+      getFriendRequests: builder.query({
+        query: () => {
+          return "/friend";
+        },
+        providesTags: ["pending"],
       }),
     };
   },
@@ -155,4 +162,5 @@ export const {
   useSendFriendRequestMutation,
   useAcceptOrRejectFriendRequestMutation,
   useDeleteFriendMutation,
+  useGetFriendRequestsQuery,
 } = apiSlice;

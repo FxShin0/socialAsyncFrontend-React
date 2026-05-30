@@ -9,7 +9,6 @@ export const friendSlice = createSlice({
   initialState,
   reducers: {
     setFriendshipStatus: (state, action) => {
-      console.log(action);
       state.currentFriendshipStatus = action.payload.currentStatus;
     },
   },

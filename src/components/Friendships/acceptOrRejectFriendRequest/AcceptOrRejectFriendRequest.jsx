@@ -10,26 +10,11 @@ import { IoPersonRemoveSharp } from "react-icons/io5";
 import { useAcceptOrRejectFriendRequestMutation } from "../../../store/api/apiSlice";
 import { setFriendshipStatus } from "../../../slices/friendSlice";
 import { useDispatch } from "react-redux";
+import { useAcceptOrRejectFriendRequest } from "../../../customHooks/useAcceptOrRejectFriend";
 
 const AcceptOrRejectFriendRequest = ({ user, token, isFetching }) => {
-  const [acceptOrRejectFriendRequest, { data, isLoading, error }] =
-    useAcceptOrRejectFriendRequestMutation();
-  const dispatch = useDispatch();
-
-  const handleClick = async (action) => {
-    try {
-      const result = await acceptOrRejectFriendRequest({
-        username: user,
-        token,
-        action,
-      }).unwrap();
-      dispatch(
-        setFriendshipStatus({
-          currentStatus: action === "true" ? true : false,
-        }),
-      );
-    } catch (err) {}
-  };
+  const { data, isLoading, error, handleClick } =
+    useAcceptOrRejectFriendRequest({ token });
   return (
     <>
       {isLoading && (
@@ -49,7 +34,7 @@ const AcceptOrRejectFriendRequest = ({ user, token, isFetching }) => {
           <DoubleActionBtnContainerStyled>
             <ActionFriendBtnStyled
               onClick={() => {
-                handleClick("true");
+                handleClick("true", user);
               }}
             >
               <IoIosPersonAdd></IoIosPersonAdd> Aceptar
@@ -57,7 +42,7 @@ const AcceptOrRejectFriendRequest = ({ user, token, isFetching }) => {
             <ActionFriendBtnStyled
               remove="true"
               onClick={() => {
-                handleClick("false");
+                handleClick("false", user);
               }}
             >
               <IoPersonRemoveSharp></IoPersonRemoveSharp> Rechazar

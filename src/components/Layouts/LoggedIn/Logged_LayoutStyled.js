@@ -41,7 +41,7 @@ export const NavProfileAndLogoutContainerStyled = styled.div`
 `;
 
 export const NavButtonNameStyled = styled.p`
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 200;
   color: white;
   user-select: none;
@@ -81,6 +81,9 @@ export const NavLogoutIconStyled = styled(TbLogout2)`
   }
 `;
 
+export const NavFriendIconWrapper = styled.div`
+  position: relative;
+`;
 export const NavFriendIconStyled = styled(FaUserFriends)`
   color: white;
   font-size: 2.2rem;
@@ -220,31 +223,10 @@ export const FriendSectionStyled = styled.div`
   scrollbar-width: thin;
   scrollbar-color: rgb(255, 255, 255) transparent;
 
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgb(255, 255, 255);
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgb(255, 255, 255);
-  }
-
   @media (max-width: 1450px) {
     width: 20%;
   }
   @media (max-width: 900px) {
     height: 95dvh;
-  }
-
-  @media (max-width: 887px) {
-    display: none;
   }
 `;

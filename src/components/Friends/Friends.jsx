@@ -22,7 +22,7 @@ import { IconStyled } from "../PostSection/PostSectionStyled";
 
 const Friends = () => {
   const { data, error, isFetching, currentData, isSuccess, isError } =
-    useGetFriendsQuery(undefined, { refetchOnMountOrArgChange: true });
+    useGetFriendsQuery();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const username = useSelector((state) => {
