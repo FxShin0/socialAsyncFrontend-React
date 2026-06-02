@@ -25,6 +25,11 @@ Actualmente el frontend permite:
 * Creación de posts
 * Comentarios en publicaciones
 * Navegación mediante React Router
+* Sistema de amistades
+* Solicitudes de amistad
+* Búsqueda de usuarios
+* Visualización de perfiles
+* Responsive design
 
 ---
 
@@ -32,17 +37,12 @@ Actualmente el frontend permite:
 
 El proyecto todavía no representa la visión final de socialAsync.
 
-Actualmente faltan varias funcionalidades importantes, especialmente relacionadas a la interacción social entre usuarios.
+Actualmente faltan algunas funcionalidades, sin embargo el nucleo del mismo esta presente y ya es usable.
 
 ### Features pendientes
 
-* Sistema de amistades
-* Solicitudes de amistad
-* Búsqueda de usuarios
-* Visualización de perfiles
 * Eliminación de posts
 * Eliminación de comentarios
-* Responsive design
 * Refactors de componentes
 * Separación de lógica utilizando custom hooks
 
@@ -111,7 +111,6 @@ La idea de socialAsync fue crear una red social pequeña pero suficientemente co
 
 ## 📌 Notas
 
-* El frontend actualmente no es responsive.
 * El proyecto utiliza una interfaz oscura por diseño, por lo que no planeo agregar light mode.
 * Muchas partes del código todavía necesitan refactors y desacoplamiento de lógica/renderizado.
 
