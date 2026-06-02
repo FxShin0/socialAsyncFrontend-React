@@ -16,6 +16,28 @@ const fadeIn = keyframes`
   }
 `;
 
+export const newPageHighlight = keyframes`
+  0% {
+    background-color: transparent;
+  }
+
+  25% {
+    background-color: rgba(255,255,255,0.05);
+  }
+
+  50% {
+    background-color: transparent;
+  }
+
+  75% {
+    background-color: rgba(255,255,255,0.05);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+`;
+
 export const PostsContainerStyled = styled.div`
   width: 100%;
   display: flex;
@@ -27,6 +49,43 @@ export const PostsContainerStyled = styled.div`
   padding-top: 10px;
 `;
 
+export const NextPageButtonStyled = styled.button`
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 8px 16px;
+
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 300;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+`;
 export const PostContainerStyled = styled.div`
   width: 100%;
   display: flex;
@@ -192,6 +251,17 @@ export const PostInputStyled = styled.textarea`
   &:focus {
     border: 1px solid rgba(255, 255, 255, 0.6);
   }
+`;
+
+export const PageWrapperStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  ${({ shouldGlow }) =>
+    shouldGlow &&
+    css`
+      animation: ${newPageHighlight} 1.2s ease;
+    `}
 `;
 
 export const SendPostBtnStyled = styled.button`
