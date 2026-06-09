@@ -20,7 +20,7 @@ import {
   RL_LoadingIconStyled,
   ErrorMessageStyled,
 } from "../RL_Shared/RL_Styled";
-import { IconStyled } from "../PostSection/PostSectionStyled";
+import { IconStyled } from "../PostsStyles/PostSectionStyled";
 import { useNavigate } from "react-router-dom";
 import { useIsDesktop } from "../../customHooks/useIsDesktop";
 import { useSelector } from "react-redux";

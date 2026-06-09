@@ -18,7 +18,7 @@ import {
 } from "../RL_Shared/RL_Styled";
 import { useNavigate } from "react-router-dom";
 import { logout, setSessionExpired } from "../../slices/authSlice";
-import { IconStyled } from "../PostSection/PostSectionStyled";
+import { IconStyled } from "../PostsStyles/PostSectionStyled";
 
 const Friends = () => {
   const { data, error, isFetching, currentData, isSuccess, isError } =

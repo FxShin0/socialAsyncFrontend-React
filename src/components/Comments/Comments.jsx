@@ -15,7 +15,7 @@ import {
   ActionsContainerStyled,
   CommentButton,
   IconStyled,
-} from "../PostSection/PostSectionStyled";
+} from "../PostsStyles/PostSectionStyled";
 import { ErrorMessageStyled } from "../RL_Shared/RL_Styled";
 import {
   BottomRef,

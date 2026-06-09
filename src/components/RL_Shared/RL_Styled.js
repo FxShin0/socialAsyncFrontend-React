@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form } from "formik";
 import { NavLink } from "react-router-dom";
 import { styled, keyframes } from "styled-components";
 import LoadingIcons from "react-loading-icons";
-import { ColdStartMsgStyled } from "../PostSection/PostSectionStyled";
+import { ColdStartMsgStyled } from "../PostsStyles/PostSectionStyled";
 const fadeIn = keyframes`
   from {
     opacity: 0;

@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDelayedLoading } from "../../customHooks/useDelayedLoading";
 import { initialValuesPost } from "../../formik/Post/initialValues";
 import { validationSchemaPost } from "../../formik/Post/validationSchema";
@@ -37,11 +37,11 @@ import {
   TextContainerStyled,
   NextPageButtonStyled,
   PageWrapperStyled,
-} from "./PostSectionStyled";
+} from "../PostsStyles/PostSectionStyled";
 import { current } from "@reduxjs/toolkit";
+import { addNewUserPost } from "../../slices/feedSlice";
 
-const PostSection = ({
-  mode,
+const ProfilePosts = ({
   canPost,
   endOfPostsMsg,
   postsAuthor,
@@ -59,19 +59,12 @@ const PostSection = ({
   const friendshipStatus = useSelector((state) => {
     return state.friend.currentFriendshipStatus;
   });
-  const modeRef = useRef(mode);
   const newPageRef = useRef(null);
   const firstPostPageRef = useRef(null);
   const [firstPostId, setFirstPostId] = useState(null);
-  const shouldShowPosts =
-    mode === "feed" || user === postsAuthor || friendshipStatus;
+  const shouldShowPosts = user === postsAuthor || friendshipStatus;
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(1);
-  const feedQuery = useGetUserFeedQuery(page, { skip: mode !== "feed" });
-  const userPostsQuery = useGetUserPostsQuery(
-    { user: postsAuthor, page },
-    { skip: mode === "feed" },
-  );
   const {
     data,
     error,
@@ -80,7 +73,7 @@ const PostSection = ({
     isSuccess,
     isError,
     currentData,
-  } = mode === "feed" ? feedQuery : userPostsQuery;
+  } = useGetUserPostsQuery({ user: postsAuthor, page });
   const showColdStart = useDelayedLoading(isFetching, 3000);
   const [
     createPost,
@@ -135,6 +128,9 @@ const PostSection = ({
         mutablePrev[0] = [result.post, ...mutablePrev[0]];
         return mutablePrev;
       });
+      dispatch(
+        addNewUserPost({ newPost: { ...result.post, isUserPost: true } }),
+      );
       setNewPostId(result.post._id);
       resetForm();
     } catch (err) {}
@@ -273,4 +269,4 @@ const PostSection = ({
   );
 };
 
-export default PostSection;
+export default ProfilePosts;

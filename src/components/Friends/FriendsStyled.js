@@ -176,8 +176,9 @@ export const FriendCardStyled = styled.div`
   z-index: 0;
   text-align: center;
   padding: 5px 10px;
+  background-color: #08081c;
   &:hover {
-    background-color: #08081e;
+    background-color: #101035;
     cursor: pointer;
   }
 `;

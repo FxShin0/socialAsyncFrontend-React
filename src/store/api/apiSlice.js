@@ -44,7 +44,6 @@ export const apiSlice = createApi({
         query: (page) => {
           return page ? `/feed?page=${page}` : "/feed";
         },
-        providesTags: ["feed"],
       }),
       getComments: builder.query({
         query: (postId) => {
@@ -70,7 +69,7 @@ export const apiSlice = createApi({
             body: postInfo, //{token, content}
           };
         },
-        invalidatesTags: ["userPosts", "feed", "profileInfo"],
+        invalidatesTags: ["userPosts", "profileInfo"],
       }),
       getUserPosts: builder.query({
         query: ({ user, page }) => {
@@ -143,6 +142,12 @@ export const apiSlice = createApi({
         },
         providesTags: ["pending"],
       }),
+      getNewPosts: builder.query({
+        query: (time) => {
+          return `https://socialasync.onrender.com/feed/newPosts/${encodeURIComponent(time)}`;
+        },
+        providesTags: ["feed"],
+      }),
     };
   },
 });
@@ -163,4 +168,5 @@ export const {
   useAcceptOrRejectFriendRequestMutation,
   useDeleteFriendMutation,
   useGetFriendRequestsQuery,
+  useGetNewPostsQuery,
 } = apiSlice;

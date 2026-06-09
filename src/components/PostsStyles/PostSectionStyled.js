@@ -16,6 +16,20 @@ const fadeIn = keyframes`
   }
 `;
 
+const newPostAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+    border-color: rgba(120,120,255,0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    border-color:white;
+  }
+`;
+
 export const newPageHighlight = keyframes`
   0% {
     background-color: transparent;
@@ -98,6 +112,11 @@ export const PostContainerStyled = styled.div`
     isNew &&
     css`
       animation: ${postAppear} 1.2s ease;
+    `}
+  ${({ isRecentPost }) =>
+    isRecentPost &&
+    css`
+      animation: ${newPostAnimation} 1.2s ease;
     `}
 `;
 

@@ -1,5 +1,4 @@
 import React from "react";
-import PostSection from "../PostSection/PostSection";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -15,6 +14,7 @@ import { BsFillFileEarmarkPostFill } from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
 import { FaCommentDots } from "react-icons/fa";
 import Friendships from "../Friendships/Friendships";
+import ProfilePosts from "./ProfilePosts";
 
 const Profile = () => {
   const { username } = useParams();
@@ -67,13 +67,12 @@ const Profile = () => {
           </>
         )}
       </ProfileStyled>
-      <PostSection
-        mode="user"
+      <ProfilePosts
         canPost={username === user}
         endOfPostsMsg="Parece que ya no hay mas contenido que mostrar."
         postsAuthor={username}
         errorMsgHeader="Ocurrio un error al mostrar los posts del perfil: "
-      ></PostSection>
+      ></ProfilePosts>
     </>
   );
 };

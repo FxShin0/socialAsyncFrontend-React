@@ -1,38 +1,47 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useIsDesktop } from "../../../customHooks/useIsDesktop";
 import { logout } from "../../../slices/authSlice";
-import FriendsGeneral from "../../Friends/FriendsGeneral";
-import SA_Logo from "../../SA_Logo/SA_Logo";
-import {
-  FriendSectionStyled,
-  LayoutContainerStyled,
-  LoggedNavbarStyled,
-  MainContainerStyled,
-  NavButtonContainerStyled,
-  NavProfileAndLogoutContainerStyled,
-  NavUserIconStyled,
-  NavLogoutIconStyled,
-  NavHomeIconStyled,
-  NavButtonNameStyled,
-  LoggedNavbarPhoneStyled,
-  NavFriendIconStyled,
-  SearchIconStyled,
-  NavFriendIconWrapper,
-} from "./Logged_LayoutStyled";
-import SearchDesktop from "../../Search/SearchDesktop/SearchDesktop";
 import {
   apiSlice,
   useGetFriendRequestsQuery,
 } from "../../../store/api/apiSlice";
-import { useIsDesktop } from "../../../customHooks/useIsDesktop";
+import FriendsGeneral from "../../Friends/FriendsGeneral";
 import { PendingCounterStyled } from "../../Friends/FriendsStyled";
+import SA_Logo from "../../SA_Logo/SA_Logo";
+import SearchDesktop from "../../Search/SearchDesktop/SearchDesktop";
+import {
+  FriendSectionStyled,
+  LayoutContainerStyled,
+  LoggedNavbarPhoneStyled,
+  LoggedNavbarStyled,
+  MainContainerStyled,
+  NavButtonContainerStyled,
+  NavButtonNameStyled,
+  NavFriendIconStyled,
+  NavFriendIconWrapper,
+  NavHomeIconStyled,
+  NavLogoutIconStyled,
+  NavProfileAndLogoutContainerStyled,
+  NavUserIconStyled,
+  SearchIconStyled,
+} from "./Logged_LayoutStyled";
+import { useEffect, useRef, useState } from "react";
+import { mergeQueryLivePosts, setScrollPxUI } from "../../../slices/feedSlice";
+import { ResultUsernameStyled } from "../../Search/SearchDesktop/SearchDesktopStyled";
 
 const Logged_Layout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const queryPosts = useSelector((state) => {
+    return state.feed.queryPosts;
+  });
   const username = useSelector((state) => {
     return state.auth.user;
   });
+  const mainContainerRef = useRef(null);
+  const scrollRef = useRef(0);
   const isDesktop = useIsDesktop();
   const { data } = useGetFriendRequestsQuery(undefined, {
     pollingInterval: 10000, //to give that real-time feeling but it should be higher if the app scaled
@@ -109,8 +118,18 @@ const Logged_Layout = () => {
             }}
           ></NavLogoutIconStyled>
         </LoggedNavbarPhoneStyled>
-        <MainContainerStyled>
-          <Outlet></Outlet>
+        <MainContainerStyled
+          ref={mainContainerRef}
+          onScroll={(e) => {
+            if (location && location.pathname === "/feed") {
+              scrollRef.current = e.target.scrollTop;
+            }
+            if (queryPosts.length != 0 && e.target.scrollTop <= 100) {
+              dispatch(mergeQueryLivePosts());
+            }
+          }}
+        >
+          <Outlet context={{ mainContainerRef, scrollRef }}></Outlet>
         </MainContainerStyled>
         {isDesktop && (
           <FriendSectionStyled>

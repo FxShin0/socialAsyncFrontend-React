@@ -3,12 +3,14 @@ import { apiSlice } from "./api/apiSlice";
 import authReducer from "../slices/authSlice";
 import { FriendSectionContainerStyled } from "../components/Friendships/FriendshipsStyled";
 import friendReducer from "../slices/friendSlice";
+import feedReducer from "../slices/feedSlice";
 
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
     friend: friendReducer,
+    feed: feedReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(apiSlice.middleware);
