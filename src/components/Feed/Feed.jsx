@@ -12,9 +12,13 @@ import { isEqual } from "lodash";
 import {
   addNewUserPost,
   mergeQueryLivePosts,
+  resetFeed,
+  setFeedNeedsRefetch,
   setLivePosts,
   setPageUI,
+  setProcessedPostIds,
   setQueryPosts,
+  setScrollPxUI,
 } from "../../slices/feedSlice";
 import {
   apiSlice,
@@ -63,7 +67,19 @@ const Feed = () => {
   const queryPosts = useSelector((state) => {
     return state.feed.queryPosts;
   });
-
+  const hasAttemptedFirstFeedLoad = useSelector((state) => {
+    return state.feed.hasAttemptedFirstFeedLoad;
+  });
+  const variation = useSelector((state) => {
+    return state.friend.variation;
+  });
+  const feedNeedsRefetch = useSelector((state) => {
+    return state.feed.feedNeedsRefetch;
+  });
+  const scrollPx = useSelector((state) => {
+    return state.feed.scrollPx;
+  });
+  const touchedNextPageRef = useRef(false);
   const [showNewPostsModal, setShowNewPostsModal] = useState(false);
   const newPostsModalTimeoutRef = useRef(null);
   const newPageRef = useRef(null);
@@ -78,6 +94,9 @@ const Feed = () => {
   const mostRecentPostTime = useSelector((state) => {
     return state.feed.mostRecentPostTime;
   });
+  const processedPostIds = useSelector((state) => {
+    return state.feed.processedPostIds;
+  });
   const [newPostsIds, setNewPostsIds] = useState([]);
   const {
     data,
@@ -87,7 +106,10 @@ const Feed = () => {
     isSuccess,
     isError,
     currentData,
-  } = useGetUserFeedQuery(page);
+    refetch,
+  } = useGetUserFeedQuery(
+    feedNeedsRefetch ? (touchedNextPageRef.current ? page : 1) : page,
+  );
   const {
     data: newPostsData,
     error: newPostsError,
@@ -97,8 +119,8 @@ const Feed = () => {
     isError: newPostsIsError,
     currentData: newPostsCurrentData,
   } = useGetNewPostsQuery(mostRecentPostTime, {
-    pollingInterval: 6000,
-    skip: !mostRecentPostTime,
+    pollingInterval: 10000,
+    skip: isFetching || !hasAttemptedFirstFeedLoad,
   });
   const showColdStart = useDelayedLoading(isFetching, 3000);
   const [
@@ -122,20 +144,70 @@ const Feed = () => {
     if (queryPosts.length === 0)
       setTimeout(() => {
         setNewPostsIds([]);
-      }, 3000);
-    else
-      setNewPostsIds(
-        queryPosts.map((post) => {
-          return post._id;
-        }),
-      );
+      }, 1500);
+    else {
+      console.log("queryPosts", queryPosts);
+      console.log("setBefore", processedPostIds);
+      let trulyNew = queryPosts.filter((post) => {
+        return !processedPostIds.includes(post._id);
+      });
+      (setNewPostsIds((prev) => {
+        return [
+          ...prev,
+          ...trulyNew.map((post) => {
+            return post._id;
+          }),
+        ];
+      }),
+        dispatch(setProcessedPostIds({ queryPosts })));
+      console.log("trulyReal", trulyNew);
+      console.log("set After", processedPostIds);
+      if (trulyNew.length != 0) {
+        clearTimeout(newPostsModalTimeoutRef.current);
+        setShowNewPostsModal(true);
+        newPostsModalTimeoutRef.current = setTimeout(() => {
+          setShowNewPostsModal(false);
+        }, 9000);
+      }
+    }
   }, [queryPosts]);
   useEffect(() => {
-    if (!currentData?.posts) return;
+    console.log(hasAttemptedFirstFeedLoad);
+  }, [hasAttemptedFirstFeedLoad]);
+  useEffect(() => {
+    if (!currentData) return;
+    console.log("triggereado setLivePosts");
+    console.log("page hook", page);
+    console.log("currentData", currentData);
+
+    console.log("setLivePosts effect", {
+      hasAttemptedFirstFeedLoad,
+      page,
+      data: currentData.posts.length,
+    });
 
     if (page != 1) setFirstPostId(currentData.posts[0]?._id);
-    dispatch(setLivePosts({ posts: currentData.posts }));
-  }, [currentData, page]);
+    dispatch(setLivePosts({ posts: currentData.posts, page: page }));
+  }, [currentData, page, isFetching]);
+  useEffect(() => {
+    return () => {
+      dispatch(
+        setScrollPxUI({ scrollPx: mainContainerRef?.current?.scrollTop }),
+      );
+    };
+  }, []);
+  useEffect(() => {
+    if (!feedNeedsRefetch) return;
+    console.log("y? desde feed feedNeedsRefetch");
+    if (scrollPx <= 50 && mainContainerRef.current.scrollTop <= 50) {
+      console.log("FEED REFRESH");
+      console.log("ANTES RESET page", page);
+      touchedNextPageRef.current = false;
+      dispatch(resetFeed());
+      dispatch(setFeedNeedsRefetch({ feedNeedsRefetch: false }));
+      refetch();
+    }
+  }, [feedNeedsRefetch, scrollPx]);
 
   useEffect(() => {
     if (!firstPostPageRef.current) return;
@@ -147,27 +219,32 @@ const Feed = () => {
       });
     });
   }, [livePosts.length]);
+  useEffect(() => {
+    console.log("feed fetching", isFetching);
+  }, [isFetching]);
+  useEffect(() => {
+    console.log("fetching recent posts");
+    console.log(newPostsCurrentData);
+  }, [newPostsIsFetching]);
+  useEffect(() => {
+    console.log("Actualizado fecha reciente", mostRecentPostTime);
+  }, [mostRecentPostTime]);
 
   useEffect(() => {
-    if (!newPostsCurrentData || newPostsCurrentData.posts.length === 0) return;
-    dispatch(setQueryPosts({ queryPosts: newPostsCurrentData.posts }));
+    if (!newPostsData || newPostsData.posts.length === 0) return;
+    console.log("useEffect desde feed newPostsData");
+    console.log("newCurrentDataPosts", newPostsData.posts);
+    dispatch(setQueryPosts({ queryPosts: newPostsData.posts }));
     if (mainContainerRef.current.scrollTop <= 100) {
-      setNewPostsIds(
-        queryPosts.map((post) => {
-          return post._id;
-        }),
-      );
       requestAnimationFrame(() => {
         dispatch(mergeQueryLivePosts());
       });
-    } else {
-      clearTimeout(newPostsModalTimeoutRef.current);
-      setShowNewPostsModal(true);
-      newPostsModalTimeoutRef.current = setTimeout(() => {
-        setShowNewPostsModal(false);
-      }, 9000);
     }
-  }, [newPostsCurrentData]);
+  }, [newPostsData]);
+
+  useEffect(() => {
+    console.log("new Posts id", newPostsIds);
+  }, [newPostsIds]);
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
@@ -185,6 +262,10 @@ const Feed = () => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    console.log(livePosts);
+  }, [livePosts]);
 
   return (
     <>
@@ -236,7 +317,7 @@ const Feed = () => {
               onClick={() => {
                 smoothScrollToTop(mainContainerRef);
               }}
-            >{`Hay ${queryPosts.length} ${queryPosts.length === 1 ? "post nuevo" : "posts nuevos"} 👀...`}</NewPostsModalStyled>
+            >{`Hay ${newPostsIds.length} ${newPostsIds.length === 1 ? "post nuevo" : "posts nuevos"} 👀...`}</NewPostsModalStyled>
           )}
         {!isError &&
           (currentData || data) &&
@@ -321,6 +402,8 @@ const Feed = () => {
           <NextPageButtonStyled
             onClick={() => {
               dispatch(setPageUI({ page: page + 1 }));
+              clearTimeout(touchedNextPageRef.current.timerId);
+              touchedNextPageRef.current = true;
             }}
           >
             Ver mas...

@@ -23,11 +23,17 @@ const Friendships = ({ loggedUser, profileUser }) => {
   const token = useSelector((state) => {
     return state.auth.token;
   });
+  const variation = useSelector((state) => {
+    return state.friend.variation;
+  });
+  const pendingVariation = useSelector((state) => {
+    return state.friend.pendingVariation;
+  });
   const dispatch = useDispatch();
   const { data, error, currentData, isFetching, isSuccess, isError, refetch } =
     useGetFriendRequestStatusQuery(profileUser, {
       skip: loggedUser === profileUser,
-      pollingInterval: 30000,
+      refetchOnMountOrArgChange: true,
     });
   useEffect(() => {
     if (!data) return;
@@ -37,6 +43,10 @@ const Friendships = ({ loggedUser, profileUser }) => {
       dispatch(setFriendshipStatus({ currentStatus: false }));
     }
   }, [data]);
+
+  useEffect(() => {
+    if (variation !== 0 || pendingVariation !== 0) refetch();
+  }, [variation, pendingVariation]);
 
   return (
     <FriendSectionContainerStyled>

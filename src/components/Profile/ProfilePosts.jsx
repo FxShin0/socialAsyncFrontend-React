@@ -73,7 +73,13 @@ const ProfilePosts = ({
     isSuccess,
     isError,
     currentData,
-  } = useGetUserPostsQuery({ user: postsAuthor, page });
+    refetch,
+  } = useGetUserPostsQuery(
+    { user: postsAuthor, page },
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
   const showColdStart = useDelayedLoading(isFetching, 3000);
   const [
     createPost,
@@ -94,6 +100,7 @@ const ProfilePosts = ({
 
   useEffect(() => {
     if (!currentData?.posts) return;
+    console.log("triggereado fetch de getUserPosts");
 
     if (page != 1) setFirstPostId(currentData.posts[0]?._id);
 
@@ -105,6 +112,15 @@ const ProfilePosts = ({
       return [...prev, currentData.posts];
     });
   }, [currentData, page]);
+  useEffect(() => {
+    if (friendshipStatus) refetch();
+  }, [friendshipStatus]);
+
+  useEffect(() => {
+    console.log("cambio error o is error");
+    console.log(error);
+    console.log(isError);
+  }, [isError, error]);
 
   useEffect(() => {
     if (!firstPostPageRef.current) return;
@@ -186,6 +202,7 @@ const ProfilePosts = ({
             return (
               <PageWrapperStyled
                 shouldGlow={indexMap != 0 && indexMap === page - 1}
+                key={`page-${indexMap}`}
                 ref={indexMap != 0 && indexMap === page - 1 ? newPageRef : null}
               >
                 {pageMap.map((post, index) => {

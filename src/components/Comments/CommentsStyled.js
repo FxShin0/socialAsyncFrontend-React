@@ -66,13 +66,11 @@ export const NameAndCommentContainerStyled = styled.div`
 `;
 
 export const DateSpanStyled = styled.span`
-  color: white;
-  opacity: 40%;
+  color: gray;
   font-size: 1.4rem;
 `;
 export const CommentNameStyled = styled.p`
-  color: white;
-  opacity: 90%;
+  color: #e6e6e6;
   font-size: 1.4rem;
   font-weight: 600;
   cursor: pointer;

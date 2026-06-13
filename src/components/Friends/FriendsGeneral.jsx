@@ -7,11 +7,18 @@ import {
 } from "./FriendsStyled";
 import Friends from "./Friends";
 import PendingFriends from "./PendingFriends";
-import { useGetFriendRequestsQuery } from "../../store/api/apiSlice";
+import {
+  useGetFriendRequestsQuery,
+  useGetFriendsQuery,
+} from "../../store/api/apiSlice";
+import { useSelector } from "react-redux";
 
 const FriendsGeneral = () => {
   const [selectedView, setSelectedView] = useState("friends");
   const { data, error } = useGetFriendRequestsQuery(undefined);
+  const newFriends = useSelector((state) => {
+    return state.friend.newFriends;
+  });
 
   return (
     <GeneralContainerStyled>
@@ -23,6 +30,12 @@ const FriendsGeneral = () => {
           isActive={selectedView === "friends"}
         >
           Amigos
+          {error && <PendingCounterStyled>e</PendingCounterStyled>}
+          {!error && (
+            <PendingCounterStyled>
+              {newFriends ? newFriends.length : 0}
+            </PendingCounterStyled>
+          )}
         </ViewBtnStyled>
         <ViewBtnStyled
           onClick={() => {
@@ -34,7 +47,7 @@ const FriendsGeneral = () => {
           {error && <PendingCounterStyled>e</PendingCounterStyled>}
           {!error && (
             <PendingCounterStyled>
-              {data?.friendRequests?.length}
+              {data ? data.friendRequests.length : 0}
             </PendingCounterStyled>
           )}
         </ViewBtnStyled>

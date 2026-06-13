@@ -20,7 +20,7 @@ export const ViewSelectorStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   margin-top: 15px;
 `;
 
@@ -181,6 +181,16 @@ export const FriendCardStyled = styled.div`
     background-color: #101035;
     cursor: pointer;
   }
+`;
+
+export const NewFriendBanner = styled.p`
+  background-color: red;
+  color: white;
+  border-radius: 10px;
+  @media (max-width: 887px) {
+    padding: 0px 45px;
+  }
+  font-size: 1rem;
 `;
 
 export const FriendIconStyled = styled(FaUserCheck)`

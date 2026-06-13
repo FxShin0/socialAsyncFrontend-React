@@ -8,6 +8,7 @@ import {
   NoFriendsMessage,
   UsernameAndNameContainerStyled,
   UsernameStyled,
+  NewFriendBanner,
 } from "./FriendsStyled";
 import { apiSlice, useGetFriendsQuery } from "../../store/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { logout, setSessionExpired } from "../../slices/authSlice";
 import { IconStyled } from "../PostsStyles/PostSectionStyled";
+import { useIsDesktop } from "../../customHooks/useIsDesktop";
+import { resetNewFriends } from "../../slices/friendSlice";
 
 const Friends = () => {
   const { data, error, isFetching, currentData, isSuccess, isError } =
@@ -28,11 +31,35 @@ const Friends = () => {
   const username = useSelector((state) => {
     return state.auth.user;
   });
+  const newFriends = useSelector((state) => {
+    return state.friend.newFriends;
+  });
+  const variation = useSelector((state) => {
+    return state.friend.variation;
+  });
+  const isDesktop = useIsDesktop();
+  if (!isDesktop) {
+    useEffect(() => {
+      return () => {
+        dispatch(resetNewFriends());
+      };
+    }, []);
+  } else {
+    useEffect(() => {
+      setTimeout(() => {
+        dispatch(resetNewFriends());
+      }, 4000);
+    }, [variation]);
+  }
   return (
     <FriendsContainerStyled>
       <FriendsTitleStyled>Amigos</FriendsTitleStyled>
       {currentData &&
         data.friendList.map((friend) => {
+          const shouldShowDate =
+            newFriends === null || !newFriends.includes(friend._id);
+          const shouldShowNewBadge =
+            newFriends && newFriends.includes(friend._id);
           return (
             <FriendCardStyled
               key={friend._id}
@@ -57,9 +84,14 @@ const Friends = () => {
                     ? friend.recieverUsername
                     : friend.emitterUsername}
                 </UsernameStyled>
-                <NameStyled>
-                  Desde: {getDate(friend.updatedAt).hourDateString}
-                </NameStyled>
+                {shouldShowNewBadge && (
+                  <NewFriendBanner>{"[Nuevo]"}</NewFriendBanner>
+                )}
+                {shouldShowDate && (
+                  <NameStyled>
+                    Desde: {getDate(friend.updatedAt).hourDateString}
+                  </NameStyled>
+                )}
               </UsernameAndNameContainerStyled>
             </FriendCardStyled>
           );
