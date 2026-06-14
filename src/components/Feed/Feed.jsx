@@ -148,6 +148,8 @@ const Feed = () => {
   useEffect(() => {
     if (error?.data?.msg == "Token no valido") {
       dispatch(setSessionExpired(true));
+
+      dispatch({ type: "app/logout" });
       dispatch(apiSlice.util.resetApiState());
       dispatch(logout());
     }

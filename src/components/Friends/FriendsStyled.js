@@ -41,6 +41,8 @@ export const PendingCounterStyled = styled.p`
   position: absolute;
   top: -10px;
   right: -9px;
+  z-index: 10;
+  user-select: none;
 `;
 
 export const ActionsContainerStyled = styled.div`

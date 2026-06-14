@@ -1,18 +1,26 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./api/apiSlice";
 import authReducer from "../slices/authSlice";
-import { FriendSectionContainerStyled } from "../components/Friendships/FriendshipsStyled";
 import friendReducer from "../slices/friendSlice";
 import feedReducer from "../slices/feedSlice";
 
+const appReducer = combineReducers({
+  [apiSlice.reducerPath]: apiSlice.reducer,
+  auth: authReducer,
+  friend: friendReducer,
+  feed: feedReducer,
+});
+
+const rootReducer = (state, action) => {
+  if (action.type === "app/logout") {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
 export const store = configureStore({
-  reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer,
-    auth: authReducer,
-    friend: friendReducer,
-    feed: feedReducer,
-  },
-  middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(apiSlice.middleware);
-  },
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
 });

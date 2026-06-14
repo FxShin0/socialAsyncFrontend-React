@@ -140,6 +140,7 @@ const Logged_Layout = () => {
           <NavButtonContainerStyled
             onClick={() => {
               dispatch(logout());
+              dispatch({ type: "app/logout" });
               dispatch(apiSlice.util.resetApiState());
             }}
           >
@@ -185,6 +186,7 @@ const Logged_Layout = () => {
           <NavLogoutIconStyled
             onClick={() => {
               dispatch(logout());
+              dispatch({ type: "app/logout" });
               dispatch(apiSlice.util.resetApiState());
             }}
           ></NavLogoutIconStyled>
