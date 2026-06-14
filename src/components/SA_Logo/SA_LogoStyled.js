@@ -23,7 +23,7 @@ export const LogoContainerStyled = styled.span`
   text-align: center;
   user-select: none;
   font-weight: 800;
-  cursor: ${({ shouldpoint }) => {
-    return shouldpoint ? "pointer" : "default";
+  cursor: ${({ $shouldpoint }) => {
+    return $shouldpoint ? "pointer" : "default";
   }};
 `;

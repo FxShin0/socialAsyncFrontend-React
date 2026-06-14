@@ -100,10 +100,8 @@ const Logged_Layout = () => {
 
   useEffect(() => {
     if (variation === 0) return;
-    console.log("triggereado useEffect variation en logged layout", variation);
 
     //si no esta en el feed deja pendiente el refetch para que lo detecte el onScroll de logged layout, si estaba en feed esto no se triggerea
-    console.log("llamado setFeedNeedsRefetch desde loggedLayout", variation);
     dispatch(setFeedNeedsRefetch({ feedNeedsRefetch: true }));
   }, [variation]);
 
@@ -119,7 +117,7 @@ const Logged_Layout = () => {
           onClick={() => {
             navigate("/feed");
           }}
-          shouldpoint="true"
+          $shouldpoint="true"
         ></SA_Logo>
         <SearchDesktop></SearchDesktop>
         <NavProfileAndLogoutContainerStyled>
@@ -198,7 +196,6 @@ const Logged_Layout = () => {
               scrollRef.current = e.target.scrollTop;
             }
             if (queryPosts.length != 0 && e.target.scrollTop <= 100) {
-              console.log("llamado merge desde loggedLayout");
               dispatch(mergeQueryLivePosts());
             }
             if (location.pathname === "/feed" && e.target.scrollTop <= 50) {

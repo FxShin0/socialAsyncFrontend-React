@@ -108,13 +108,15 @@ export const PostContainerStyled = styled.div`
   gap: 4px;
   flex-direction: column;
   padding: 10px 20px;
-  ${({ isNew }) =>
-    isNew &&
+  position: relative;
+  z-index: 0;
+  ${({ $isNew }) =>
+    $isNew &&
     css`
       animation: ${postAppear} 1.2s ease;
     `}
-  ${({ isRecentPost }) =>
-    isRecentPost &&
+  ${({ $isRecentPost }) =>
+    $isRecentPost &&
     css`
       animation: ${newPostAnimation} 1.2s ease;
     `}
@@ -217,6 +219,43 @@ export const FeedLoadingIcon = styled(LoadingIcons.Puff)`
   width: 100px;
 `;
 
+export const DeleteLoadingIcon = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 8px;
+  right: 2px;
+`;
+
+export const DeletePostIconStyled = styled.span`
+  color: white;
+  font-size: 2rem;
+  position: absolute;
+  top: 8px;
+  right: 2px;
+  display: ${({ $hide }) => ($hide ? "none" : "flex")};
+
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition:
+    transform 0.15s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.18);
+    color: #ff6b6b;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
 // createPosts
 
 export const CreatePostContainerStyled = styled.div`
@@ -276,8 +315,8 @@ export const PageWrapperStyled = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  ${({ shouldGlow }) =>
-    shouldGlow &&
+  ${({ $shouldGlow }) =>
+    $shouldGlow &&
     css`
       animation: ${newPageHighlight} 1.2s ease;
     `}

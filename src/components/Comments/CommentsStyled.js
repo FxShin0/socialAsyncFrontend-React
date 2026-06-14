@@ -15,6 +15,23 @@ export const glow = keyframes`
   }
 `;
 
+const successAppear = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotate(-20deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.15) rotate(5deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+`;
+
 export const softBounceIn = keyframes`
   0% {
     opacity: 0;
@@ -50,11 +67,57 @@ export const CommentContainerStyled = styled.div`
   padding: 10px 20px;
   border-radius: 20px;
   flex-shrink: 0;
-  ${({ isNew }) =>
-    isNew &&
+  position: relative;
+  ${({ $isNew }) =>
+    $isNew &&
     css`
       animation: ${glow} 1.2s ease;
     `}
+`;
+
+export const DeleteCommentIconStyled = styled.span`
+  color: white;
+  font-size: 1.7rem;
+  position: absolute;
+  top: 0px;
+  right: -2px;
+  display: ${({ $hide }) => ($hide ? "none" : "flex")};
+
+  cursor: pointer;
+  margin: 6px;
+  border-radius: 50%;
+  transition:
+    transform 0.15s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    color: #ff6b6b;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+export const DeleteCommentSuccessIcon = styled.span`
+  font-size: 1.2rem;
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  animation: ${successAppear} 280ms ease-out;
+  transform-origin: center;
+`;
+
+export const DeleteLoadingIcon = styled(LoadingIcons.Puff)`
+  align-self: center;
+  justify-self: center;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
 `;
 
 export const NameAndCommentContainerStyled = styled.div`

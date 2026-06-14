@@ -8,9 +8,13 @@ import { validationSchemaPost } from "../../formik/Post/validationSchema";
 import { autoExpandTextArea } from "../../helpers/autoExpandTextArea";
 import { getDate } from "../../helpers/getDateString";
 import { logout, setSessionExpired } from "../../slices/authSlice";
-import { isEqual } from "lodash";
+
+import { MdDeleteForever } from "react-icons/md";
+
+import { smoothScrollToTop } from "../../helpers/smoothScrollToTop";
 import {
   addNewUserPost,
+  deletePostFromLive,
   mergeQueryLivePosts,
   resetFeed,
   setFeedNeedsRefetch,
@@ -23,6 +27,7 @@ import {
 import {
   apiSlice,
   useCreatePostMutation,
+  useDeletePostMutation,
   useGetNewPostsQuery,
   useGetUserFeedQuery,
 } from "../../store/api/apiSlice";
@@ -49,9 +54,10 @@ import {
   SendPostBtnStyled,
   SendPostFormContainerStyled,
   TextContainerStyled,
+  DeleteLoadingIcon,
+  DeletePostIconStyled,
 } from "../PostsStyles/PostSectionStyled";
 import { NewPostsModalStyled } from "./FeedStyled";
-import { smoothScrollToTop } from "../../helpers/smoothScrollToTop";
 
 const Feed = () => {
   const [newPostId, setNewPostId] = useState(null);
@@ -97,6 +103,7 @@ const Feed = () => {
   const processedPostIds = useSelector((state) => {
     return state.feed.processedPostIds;
   });
+  const [deletingPostId, setDeletingPostId] = useState(null);
   const [newPostsIds, setNewPostsIds] = useState([]);
   const {
     data,
@@ -127,6 +134,11 @@ const Feed = () => {
     createPost,
     { data: dataNewPost, isLoading: isLoadingNewPost, error: errorNewPost },
   ] = useCreatePostMutation();
+
+  const [
+    deletePost,
+    { data: dataDeletePost, isLoading: isLoadingDelete, error: errorDelete },
+  ] = useDeletePostMutation();
   useLayoutEffect(() => {
     if (!mainContainerRef.current) return;
     if (!livePosts.length) return;
@@ -146,8 +158,6 @@ const Feed = () => {
         setNewPostsIds([]);
       }, 1500);
     else {
-      console.log("queryPosts", queryPosts);
-      console.log("setBefore", processedPostIds);
       let trulyNew = queryPosts.filter((post) => {
         return !processedPostIds.includes(post._id);
       });
@@ -160,8 +170,6 @@ const Feed = () => {
         ];
       }),
         dispatch(setProcessedPostIds({ queryPosts })));
-      console.log("trulyReal", trulyNew);
-      console.log("set After", processedPostIds);
       if (trulyNew.length != 0) {
         clearTimeout(newPostsModalTimeoutRef.current);
         setShowNewPostsModal(true);
@@ -172,19 +180,7 @@ const Feed = () => {
     }
   }, [queryPosts]);
   useEffect(() => {
-    console.log(hasAttemptedFirstFeedLoad);
-  }, [hasAttemptedFirstFeedLoad]);
-  useEffect(() => {
     if (!currentData) return;
-    console.log("triggereado setLivePosts");
-    console.log("page hook", page);
-    console.log("currentData", currentData);
-
-    console.log("setLivePosts effect", {
-      hasAttemptedFirstFeedLoad,
-      page,
-      data: currentData.posts.length,
-    });
 
     if (page != 1) setFirstPostId(currentData.posts[0]?._id);
     dispatch(setLivePosts({ posts: currentData.posts, page: page }));
@@ -198,10 +194,7 @@ const Feed = () => {
   }, []);
   useEffect(() => {
     if (!feedNeedsRefetch) return;
-    console.log("y? desde feed feedNeedsRefetch");
     if (scrollPx <= 50 && mainContainerRef.current.scrollTop <= 50) {
-      console.log("FEED REFRESH");
-      console.log("ANTES RESET page", page);
       touchedNextPageRef.current = false;
       dispatch(resetFeed());
       dispatch(setFeedNeedsRefetch({ feedNeedsRefetch: false }));
@@ -219,21 +212,9 @@ const Feed = () => {
       });
     });
   }, [livePosts.length]);
-  useEffect(() => {
-    console.log("feed fetching", isFetching);
-  }, [isFetching]);
-  useEffect(() => {
-    console.log("fetching recent posts");
-    console.log(newPostsCurrentData);
-  }, [newPostsIsFetching]);
-  useEffect(() => {
-    console.log("Actualizado fecha reciente", mostRecentPostTime);
-  }, [mostRecentPostTime]);
 
   useEffect(() => {
     if (!newPostsData || newPostsData.posts.length === 0) return;
-    console.log("useEffect desde feed newPostsData");
-    console.log("newCurrentDataPosts", newPostsData.posts);
     dispatch(setQueryPosts({ queryPosts: newPostsData.posts }));
     if (mainContainerRef.current.scrollTop <= 100) {
       requestAnimationFrame(() => {
@@ -241,10 +222,6 @@ const Feed = () => {
       });
     }
   }, [newPostsData]);
-
-  useEffect(() => {
-    console.log("new Posts id", newPostsIds);
-  }, [newPostsIds]);
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
@@ -259,13 +236,17 @@ const Feed = () => {
       setNewPostId(result.post._id);
       resetForm();
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
-
-  useEffect(() => {
-    console.log(livePosts);
-  }, [livePosts]);
+  const handleDelete = async (postId) => {
+    try {
+      let result = await deletePost(postId).unwrap();
+      dispatch(deletePostFromLive({ postId }));
+    } catch (err) {
+      alert(err.data.msg);
+    }
+  };
 
   return (
     <>
@@ -325,17 +306,35 @@ const Feed = () => {
             return (
               <PageWrapperStyled
                 key={`page-${indexMap}`}
-                shouldGlow={indexMap != 0 && indexMap === page - 1}
+                $shouldGlow={indexMap != 0 && indexMap === page - 1}
                 ref={indexMap != 0 && indexMap === page - 1 ? newPageRef : null}
               >
                 {pageMap.map((post, index) => {
                   return (
                     <PostContainerStyled
                       key={post?._id}
-                      isNew={post?._id === newPostId}
+                      $isNew={post?._id === newPostId}
                       ref={firstPostId === post?._id ? firstPostPageRef : null}
-                      isRecentPost={newPostsIds.includes(post?._id)}
+                      $isRecentPost={newPostsIds.includes(post?._id)}
                     >
+                      {deletingPostId === post._id && isLoadingDelete && (
+                        <DeleteLoadingIcon
+                          stroke="#98ff98"
+                          strokeOpacity={0.125}
+                          speed={0.75}
+                        ></DeleteLoadingIcon>
+                      )}
+                      {deletingPostId !== post._id && !errorDelete && (
+                        <DeletePostIconStyled
+                          $hide={post?.username !== user}
+                          onClick={() => {
+                            setDeletingPostId(post._id);
+                            handleDelete(post._id);
+                          }}
+                        >
+                          <MdDeleteForever></MdDeleteForever>
+                        </DeletePostIconStyled>
+                      )}
                       <IconAndNameContainerStyled>
                         <IconStyled
                           onClick={() => {

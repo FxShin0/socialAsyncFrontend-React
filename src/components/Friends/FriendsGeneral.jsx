@@ -27,7 +27,7 @@ const FriendsGeneral = () => {
           onClick={() => {
             setSelectedView("friends");
           }}
-          isActive={selectedView === "friends"}
+          $isActive={selectedView === "friends"}
         >
           Amigos
           {error && <PendingCounterStyled>e</PendingCounterStyled>}
@@ -41,7 +41,7 @@ const FriendsGeneral = () => {
           onClick={() => {
             setSelectedView("pending");
           }}
-          isActive={selectedView === "pending"}
+          $isActive={selectedView === "pending"}
         >
           Pendientes
           {error && <PendingCounterStyled>e</PendingCounterStyled>}

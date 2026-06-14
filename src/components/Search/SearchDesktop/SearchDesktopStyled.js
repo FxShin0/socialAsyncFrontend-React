@@ -21,8 +21,8 @@ export const SearchFriendsInputStyled = styled.input`
 export const SearchResultsContainerStyled = styled.div`
   position: absolute;
   width: 100%;
-  display: ${({ shouldShowResults }) => {
-    return shouldShowResults ? "flex" : "none";
+  display: ${({ $shouldShowResults }) => {
+    return $shouldShowResults ? "flex" : "none";
   }};
   z-index: 999;
   justify-content: flex-start;

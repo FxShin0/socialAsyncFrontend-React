@@ -44,7 +44,7 @@ const SearchDesktop = () => {
         onChange={handleInputChange}
       />
 
-      <SearchResultsContainerStyled shouldShowResults={shouldShowResults}>
+      <SearchResultsContainerStyled $shouldShowResults={shouldShowResults}>
         {isFetching && (
           <SearchLoadingIconStyled
             stroke="#98ff98"

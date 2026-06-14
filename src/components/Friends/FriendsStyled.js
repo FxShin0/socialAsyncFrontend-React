@@ -96,9 +96,9 @@ export const ActionFriendBtnStyled = styled.button`
 `;
 
 export const ViewBtnStyled = styled.button`
-  border: 1px solid ${({ isActive }) => (isActive ? "#00158a" : "#3a3d55")};
+  border: 1px solid ${({ $isActive }) => ($isActive ? "#00158a" : "#3a3d55")};
 
-  background-color: ${({ isActive }) => (isActive ? "#00158a" : "#121424")};
+  background-color: ${({ $isActive }) => ($isActive ? "#00158a" : "#121424")};
 
   color: white;
 

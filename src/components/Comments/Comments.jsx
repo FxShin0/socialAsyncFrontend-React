@@ -8,6 +8,7 @@ import { initialValuesComment } from "../../formik/Comment/initialValues";
 import { validationSchemaComment } from "../../formik/Comment/validationSchema";
 import { getDate } from "../../helpers/getDateString";
 import {
+  useDeleteCommentMutation,
   useGetCommentsQuery,
   usePostCommentMutation,
 } from "../../store/api/apiSlice";
@@ -33,7 +34,11 @@ import {
   NameAndCommentContainerStyled,
   NoCommentsMsgStyled,
   SendCommentButton,
+  DeleteCommentIconStyled,
+  DeleteLoadingIcon,
+  DeleteCommentSuccessIcon,
 } from "./CommentsStyled";
+import { MdDeleteForever } from "react-icons/md";
 
 const Comments = ({ postId }) => {
   const token = useSelector((state) => {
@@ -42,8 +47,12 @@ const Comments = ({ postId }) => {
   const navigate = useNavigate();
   const bottomRef = useRef(null);
   const hasOpenedOnceRef = useRef(false);
+  const user = useSelector((state) => {
+    return state.auth.user;
+  });
   const [previousCommentIds, setPreviousCommentIds] = useState(new Set());
   const [pendingCommentId, setPendingCommentId] = useState(null);
+  const [deletingCommentId, setDeletingCommentId] = useState(null);
   const [newCommentIds, setNewCommentIds] = useState(new Set());
   const [allComments, setAllComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
@@ -66,18 +75,11 @@ const Comments = ({ postId }) => {
     postComment,
     { data: dataComment, isLoading: isLoadingComment, error: errorComment },
   ] = usePostCommentMutation();
+  const [
+    deleteComment,
+    { data: dataDeleteComment, isLoading: isLoadingDelete, error: errorDelete },
+  ] = useDeleteCommentMutation();
   const shouldShowCommentLoader = isLoadingComment || pendingCommentId;
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      const result = await postComment({
-        token,
-        content: values.comment,
-        postId,
-      }).unwrap();
-      setPendingCommentId(result.comment._id);
-      resetForm();
-    } catch (err) {}
-  };
   useEffect(() => {
     if (!data || !pendingCommentId) return;
 
@@ -134,6 +136,25 @@ const Comments = ({ postId }) => {
     });
   }, [showComments]);
 
+  const handleDelete = async (commentId) => {
+    try {
+      let result = await deleteComment(commentId).unwrap();
+    } catch (err) {
+      alert(err.data.msg);
+    }
+  };
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      const result = await postComment({
+        token,
+        content: values.comment,
+        postId,
+      }).unwrap();
+      setPendingCommentId(result.comment._id);
+      resetForm();
+    } catch (err) {}
+  };
+
   return (
     <>
       <ActionsContainerStyled>
@@ -157,8 +178,29 @@ const Comments = ({ postId }) => {
               return (
                 <CommentContainerStyled
                   key={comment?._id}
-                  isNew={newCommentIds?.has(comment?._id)}
+                  $isNew={newCommentIds?.has(comment?._id)}
                 >
+                  {deletingCommentId === comment._id && isLoadingDelete && (
+                    <DeleteLoadingIcon
+                      stroke="#98ff98"
+                      strokeOpacity={0.125}
+                      speed={0.75}
+                    ></DeleteLoadingIcon>
+                  )}
+                  {deletingCommentId === comment._id && dataDeleteComment && (
+                    <DeleteCommentSuccessIcon>✔️</DeleteCommentSuccessIcon>
+                  )}
+                  {deletingCommentId !== comment._id && !errorDelete && (
+                    <DeleteCommentIconStyled
+                      $hide={comment?.username !== user}
+                      onClick={() => {
+                        setDeletingCommentId(comment._id);
+                        handleDelete(comment._id);
+                      }}
+                    >
+                      <MdDeleteForever></MdDeleteForever>
+                    </DeleteCommentIconStyled>
+                  )}
                   <IconStyled
                     onClick={() => {
                       navigate(`/posts/${comment?.username}`);

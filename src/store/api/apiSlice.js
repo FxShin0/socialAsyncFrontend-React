@@ -42,7 +42,6 @@ export const apiSlice = createApi({
       }),
       getUserFeed: builder.query({
         query: (page) => {
-          console.log("EJECUTADO GETFEED CON PAGE", page);
           return page ? `/feed?page=${page}` : "/feed";
         },
         providesTags: ["realFeed"],
@@ -144,9 +143,26 @@ export const apiSlice = createApi({
       }),
       getNewPosts: builder.query({
         query: (time) => {
-          console.log("EJECUTADO GETNEWPOSTS");
           return `https://socialasync.onrender.com/feed/newPosts/${encodeURIComponent(time)}`;
         },
+      }),
+      deletePost: builder.mutation({
+        query: (postId) => {
+          return {
+            url: `/post/${postId}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["profileInfo"],
+      }),
+      deleteComment: builder.mutation({
+        query: (commentId) => {
+          return {
+            url: `/comment/${commentId}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["comments", "profileInfo"],
       }),
     };
   },
@@ -169,4 +185,6 @@ export const {
   useDeleteFriendMutation,
   useGetFriendRequestsQuery,
   useGetNewPostsQuery,
+  useDeletePostMutation,
+  useDeleteCommentMutation,
 } = apiSlice;

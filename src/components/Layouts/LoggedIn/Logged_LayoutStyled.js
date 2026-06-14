@@ -22,6 +22,7 @@ export const LoggedNavbarPhoneStyled = styled.nav`
   align-items: center;
   gap: 40px;
   position: fixed;
+  z-index: 4;
   bottom: 0px;
   padding: 20px 0px;
   border-top: solid 1px white;

@@ -24,7 +24,6 @@ export const authSlice = createSlice({
     },
     setSessionExpired: (state, action) => {
       state.isSessionExpired = action.payload;
-      console.log(state.isSessionExpired);
     },
   },
 });

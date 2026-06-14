@@ -44,7 +44,7 @@ const SearchMobile = () => {
         }}
         onChange={handleInputChange}
       ></SearchInputStyled>
-      <SearchResultsContainerStyled shouldShowResults={shouldShowResults}>
+      <SearchResultsContainerStyled $shouldShowResults={shouldShowResults}>
         {isFetching && (
           <SearchLoadingIconStyled
             stroke="#98ff98"

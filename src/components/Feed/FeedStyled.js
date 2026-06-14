@@ -1,5 +1,4 @@
 import { styled, keyframes } from "styled-components";
-
 const newPostsModalAnimation = keyframes`
   0% {
     opacity: 0;

@@ -12,6 +12,7 @@ const initialState = {
   hasAttemptedFirstFeedLoad: false,
   feedNeedsRefetch: false,
   processedPostIds: [],
+  userPosts: [],
 };
 
 export const feedSlice = createSlice({
@@ -19,15 +20,18 @@ export const feedSlice = createSlice({
   initialState,
   reducers: {
     setPageUI: (state, action) => {
-      console.log(action);
       state.page = action.payload.page;
     },
     setLivePosts: (state, action) => {
       state.hasAttemptedFirstFeedLoad = true;
-      console.log("llamado setLivePosts");
       if (action.payload.posts.length === 0) return;
       state.livePosts[action.payload.page - 1] = action.payload.posts;
-      console.log(current(state.livePosts));
+      if (action.payload.page === 1) {
+        state.livePosts[0] = [...state.livePosts[0], ...state.userPosts].sort(
+          (postA, postB) =>
+            new Date(postB.createdAt) - new Date(postA.createdAt),
+        );
+      }
       if (state.livePosts[0]?.length) {
         const firstRealPost = state.livePosts[0].find(
           (post) => !post.isUserPost,
@@ -42,8 +46,6 @@ export const feedSlice = createSlice({
       state.scrollPx = action.payload.scrollPx;
     },
     addNewUserPost: (state, action) => {
-      console.log("llamado addNewUserPost");
-      console.log(action.payload);
       if (state.livePosts.length == 0) {
         state.livePosts = [[action.payload.newPost]];
       } else {
@@ -56,33 +58,23 @@ export const feedSlice = createSlice({
         ...state.userCreatedPostsIds,
         action.payload.newPost._id,
       ];
-      console.log(state.userCreatedPostsIds);
+      state.userPosts.push(action.payload.newPost);
     },
     setQueryPosts: (state, action) => {
-      console.log("llamado setQueryPosts");
-      console.log(action.payload);
       state.queryPosts = [
         ...action.payload.queryPosts.filter((post) => {
           return !state.userCreatedPostsIds.includes(post._id);
         }),
         ...state.queryPosts,
       ];
-      console.log(state.queryPosts);
       if (state.queryPosts.length != 0) {
-        console.log(
-          "actualizado fecha mas reciente con data del post",
-          state.queryPosts[0],
-        );
         state.mostRecentPostTime = state.queryPosts[0].createdAt;
       }
     },
     mergeQueryLivePosts: (state, action) => {
-      console.log("hecho merge, actualmente queryPosts", state.queryPosts);
       const existingIds = new Set(
         state.livePosts.flat().map((post) => post._id),
       );
-      console.log(existingIds);
-      console.log(state.queryPosts);
       if (state.livePosts.length === 0) {
         state.livePosts = [state.queryPosts];
       } else {
@@ -96,12 +88,9 @@ export const feedSlice = createSlice({
           ...state.livePosts.slice(1),
         ];
       }
-      console.log(state.livePosts);
       state.queryPosts = [];
-      console.log("Asi quedo queryPosts", state.queryPosts);
     },
     resetFeed: (state) => {
-      console.log("reset feed");
       state.page = 1;
       state.livePosts = [];
       state.scrollPx = 0;
@@ -111,10 +100,6 @@ export const feedSlice = createSlice({
       state.userCreatedPostsIds = [];
     },
     setFeedNeedsRefetch: (state, action) => {
-      console.log(
-        "ejecutado setFeedNeedsRefetch ",
-        action.payload.feedNeedsRefetch,
-      );
       state.feedNeedsRefetch = action.payload.feedNeedsRefetch;
     },
     setProcessedPostIds: (state, action) => {
@@ -129,6 +114,16 @@ export const feedSlice = createSlice({
           }),
       ];
     },
+    deletePostFromLive: (state, action) => {
+      state.livePosts = state.livePosts.map((page) => {
+        return page.filter((post) => {
+          return post._id !== action.payload.postId;
+        });
+      });
+      state.userPosts = state.userPosts.filter((post) => {
+        return post._id !== action.payload.postId;
+      });
+    },
   },
 });
 
@@ -142,6 +137,7 @@ export const {
   resetFeed,
   setFeedNeedsRefetch,
   setProcessedPostIds,
+  deletePostFromLive,
 } = feedSlice.actions;
 
 export default feedSlice.reducer;

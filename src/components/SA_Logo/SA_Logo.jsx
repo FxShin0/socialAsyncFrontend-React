@@ -6,7 +6,7 @@ import {
 
 const SA_Logo = ({ onClick, shouldpoint }) => {
   return (
-    <LogoContainerStyled onClick={onClick} shouldpoint={shouldpoint}>
+    <LogoContainerStyled onClick={onClick} $shouldpoint={shouldpoint}>
       <RedLetterSpanStyled>S</RedLetterSpanStyled>
       <WhiteLetterSpanStyled>ocial</WhiteLetterSpanStyled>
       <RedLetterSpanStyled>A</RedLetterSpanStyled>

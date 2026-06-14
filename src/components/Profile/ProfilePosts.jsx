@@ -11,6 +11,7 @@ import { logout, setSessionExpired } from "../../slices/authSlice";
 import {
   apiSlice,
   useCreatePostMutation,
+  useDeletePostMutation,
   useGetUserFeedQuery,
   useGetUserPostsQuery,
 } from "../../store/api/apiSlice";
@@ -37,9 +38,12 @@ import {
   TextContainerStyled,
   NextPageButtonStyled,
   PageWrapperStyled,
+  DeleteLoadingIcon,
+  DeletePostIconStyled,
 } from "../PostsStyles/PostSectionStyled";
 import { current } from "@reduxjs/toolkit";
-import { addNewUserPost } from "../../slices/feedSlice";
+import { addNewUserPost, deletePostFromLive } from "../../slices/feedSlice";
+import { MdDeleteForever } from "react-icons/md";
 
 const ProfilePosts = ({
   canPost,
@@ -64,6 +68,7 @@ const ProfilePosts = ({
   const [firstPostId, setFirstPostId] = useState(null);
   const shouldShowPosts = user === postsAuthor || friendshipStatus;
   const [allPosts, setAllPosts] = useState([]);
+  const [deletingPostId, setDeletingPostId] = useState(null);
   const [page, setPage] = useState(1);
   const {
     data,
@@ -85,6 +90,10 @@ const ProfilePosts = ({
     createPost,
     { data: dataNewPost, isLoading: isLoadingNewPost, error: errorNewPost },
   ] = useCreatePostMutation();
+  const [
+    deletePost,
+    { data: dataDeletePost, isLoading: isLoadingDelete, error: errorDelete },
+  ] = useDeletePostMutation();
   useEffect(() => {
     setAllPosts([]);
     setPage(1);
@@ -100,7 +109,6 @@ const ProfilePosts = ({
 
   useEffect(() => {
     if (!currentData?.posts) return;
-    console.log("triggereado fetch de getUserPosts");
 
     if (page != 1) setFirstPostId(currentData.posts[0]?._id);
 
@@ -115,12 +123,6 @@ const ProfilePosts = ({
   useEffect(() => {
     if (friendshipStatus) refetch();
   }, [friendshipStatus]);
-
-  useEffect(() => {
-    console.log("cambio error o is error");
-    console.log(error);
-    console.log(isError);
-  }, [isError, error]);
 
   useEffect(() => {
     if (!firstPostPageRef.current) return;
@@ -150,6 +152,22 @@ const ProfilePosts = ({
       setNewPostId(result.post._id);
       resetForm();
     } catch (err) {}
+  };
+
+  const handleDelete = async (postId) => {
+    try {
+      let result = await deletePost(postId).unwrap();
+      dispatch(deletePostFromLive({ postId }));
+      setAllPosts((prev) => {
+        return prev.map((page) => {
+          return page.filter((post) => {
+            return post._id !== postId;
+          });
+        });
+      });
+    } catch (err) {
+      alert(err.data.msg);
+    }
   };
 
   return (
@@ -201,7 +219,7 @@ const ProfilePosts = ({
           allPosts?.map((pageMap, indexMap) => {
             return (
               <PageWrapperStyled
-                shouldGlow={indexMap != 0 && indexMap === page - 1}
+                $shouldGlow={indexMap != 0 && indexMap === page - 1}
                 key={`page-${indexMap}`}
                 ref={indexMap != 0 && indexMap === page - 1 ? newPageRef : null}
               >
@@ -209,9 +227,27 @@ const ProfilePosts = ({
                   return (
                     <PostContainerStyled
                       key={post?._id}
-                      isNew={post?._id === newPostId}
+                      $isNew={post?._id === newPostId}
                       ref={firstPostId === post?._id ? firstPostPageRef : null}
                     >
+                      {deletingPostId === post._id && isLoadingDelete && (
+                        <DeleteLoadingIcon
+                          stroke="#98ff98"
+                          strokeOpacity={0.125}
+                          speed={0.75}
+                        ></DeleteLoadingIcon>
+                      )}
+                      {deletingPostId !== post._id && !errorDelete && (
+                        <DeletePostIconStyled
+                          $hide={post?.username !== user}
+                          onClick={() => {
+                            setDeletingPostId(post._id);
+                            handleDelete(post._id);
+                          }}
+                        >
+                          <MdDeleteForever></MdDeleteForever>
+                        </DeletePostIconStyled>
+                      )}
                       <IconAndNameContainerStyled>
                         <IconStyled
                           onClick={() => {
