@@ -84,10 +84,6 @@ export const NavLogoutIconStyled = styled(TbLogout2)`
 
 export const NavFriendIconWrapper = styled.div`
   position: relative;
-`;
-export const NavFriendIconStyled = styled(FaUserFriends)`
-  color: white;
-  font-size: 2.2rem;
   transition:
     transform 0.12s ease,
     background-color 0.12s ease;
@@ -97,6 +93,10 @@ export const NavFriendIconStyled = styled(FaUserFriends)`
     background-color: rgba(255, 255, 255, 0.12);
   }
   -webkit-tap-highlight-color: transparent;
+`;
+export const NavFriendIconStyled = styled(FaUserFriends)`
+  color: white;
+  font-size: 2.2rem;
 `;
 
 export const NavHomeIconStyled = styled(FaHome)`
