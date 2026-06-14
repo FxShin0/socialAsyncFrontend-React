@@ -17,7 +17,9 @@ const DeleteFriend = ({ profileUser, isFetching }) => {
     try {
       const result = await deleteFriend(profileUser).unwrap();
       dispatch(setFriendshipStatus({ currentStatus: false }));
-    } catch (err) {}
+    } catch (err) {
+      alert(err.data.msg);
+    }
   };
   return (
     <>

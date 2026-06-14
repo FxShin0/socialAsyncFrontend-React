@@ -16,7 +16,9 @@ const SendFriendRequest = ({ token, username, isFetching, msg }) => {
         token,
         username,
       }).unwrap();
-    } catch (err) {}
+    } catch (err) {
+      alert(err.data.msg);
+    }
   };
   return (
     <>

@@ -50,7 +50,9 @@ const Register = () => {
       dispatch(setUserData(resultLogin));
       navigate("/feed");
       resetForm();
-    } catch (err) {}
+    } catch (err) {
+      alert(err.data.msg);
+    }
   };
   return (
     <RL_ContainerStyled>

@@ -18,7 +18,9 @@ export const useAcceptOrRejectFriendRequest = ({ token }) => {
           currentStatus: action === "true" ? true : false,
         }),
       );
-    } catch (err) {}
+    } catch (err) {
+      alert(err.data.msg);
+    }
   };
 
   return {

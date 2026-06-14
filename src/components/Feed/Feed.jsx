@@ -238,7 +238,7 @@ const Feed = () => {
       setNewPostId(result.post._id);
       resetForm();
     } catch (err) {
-      alert(err);
+      alert(err.data.msg);
     }
   };
   const handleDelete = async (postId) => {

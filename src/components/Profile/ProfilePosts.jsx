@@ -152,7 +152,9 @@ const ProfilePosts = ({
       );
       setNewPostId(result.post._id);
       resetForm();
-    } catch (err) {}
+    } catch (err) {
+      alert(err.data.msg);
+    }
   };
 
   const handleDelete = async (postId) => {

@@ -31,7 +31,9 @@ const Login = () => {
       }).unwrap();
       dispatch(setUserData(result));
       navigate("/feed");
-    } catch (err) {}
+    } catch (err) {
+      alert(err.data.msg);
+    }
   };
   return (
     <RL_ContainerStyled>

@@ -152,7 +152,12 @@ const Comments = ({ postId }) => {
       }).unwrap();
       setPendingCommentId(result.comment._id);
       resetForm();
-    } catch (err) {}
+    } catch (err) {
+      console.log(err.data.cod === 106);
+      alert(
+        err.data.cod === 106 ? "El post no existe o fue borrado" : err.data.msg,
+      );
+    }
   };
 
   return (
