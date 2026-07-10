@@ -123,8 +123,6 @@ La idea de socialAsync fue crear una red social pequeña pero suficientemente co
 
 ## 📷 Capturas
 
-## 📷 Capturas
-
 ### Login
 
 ![Login](./screenshots/login.jpg)
