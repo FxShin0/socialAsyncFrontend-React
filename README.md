@@ -2,15 +2,19 @@
 
 Frontend de **socialAsync**, una pequeña red social desarrollada como proyecto de práctica full stack utilizando React.
 
-> ⚠️ El proyecto sigue en desarrollo.
-> Algunas funcionalidades del backend ya existen pero todavía no fueron implementadas en el frontend.
+> 🚧 El desarrollo activo del proyecto se encuentra actualmente en pausa.
+>
+> socialAsync alcanzó el objetivo con el que fue concebido: servirme como proyecto para aprender y practicar el desarrollo de aplicaciones full stack modernas.
+>
+> La aplicación ya cuenta con todas las funcionalidades principales previstas y es completamente utilizable. En el futuro planeo retomar el proyecto para realizar mejoras internas, refactors y optimizaciones de arquitectura, pero por el momento no se encuentran planificadas nuevas funcionalidades importantes.
 
 ---
 
 ## 🌐 Deploy
 
-El frontend se encuentra deployado en Vercel: https://social-async-frontend-react.vercel.app
+El frontend se encuentra deployado en Vercel:
 
+https://social-async-frontend-react.vercel.app
 
 ---
 
@@ -23,7 +27,9 @@ Actualmente el frontend permite:
 * Persistencia de sesión mediante JWT
 * Visualización del feed
 * Creación de posts
+* Eliminación de posts
 * Comentarios en publicaciones
+* Eliminación de comentarios
 * Navegación mediante React Router
 * Sistema de amistades
 * Solicitudes de amistad
@@ -35,16 +41,15 @@ Actualmente el frontend permite:
 
 ## ⚠️ Estado actual del proyecto
 
-El proyecto todavía no representa la visión final de socialAsync.
+Desde el punto de vista funcional, el proyecto se considera finalizado.
 
-Actualmente faltan algunas funcionalidades, sin embargo el nucleo del mismo esta presente y ya es usable.
+Las tareas pendientes corresponden principalmente a mejoras internas de código, organización y mantenibilidad, por lo que no afectan el uso normal de la aplicación.
 
-### Features pendientes
+### Mejoras futuras
 
-* Eliminación de posts
-* Eliminación de comentarios
-* Refactors de componentes
-* Separación de lógica utilizando custom hooks
+* Refactorización de componentes.
+* Mayor separación de responsabilidades mediante custom hooks.
+* Optimizaciones generales de la arquitectura y del código.
 
 ---
 
@@ -133,4 +138,4 @@ La idea de socialAsync fue crear una red social pequeña pero suficientemente co
 
 ## 📚 Estado del proyecto
 
-🛠️ En desarrollo activo.
+🚧 En pausa.
